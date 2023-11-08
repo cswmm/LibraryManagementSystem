@@ -150,7 +150,7 @@ public class Main extends JFrame implements ActionListener {
         backButton.addActionListener(this);
 
         JLabel loginLabel = new JLabel("Log In");
-        loginLabel.setBounds(220, 100, 100, 40);
+        loginLabel.setBounds(218, 100, 100, 40);
         loginLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         loginLabel.setForeground(new Color(246, 243, 243));
 
@@ -202,7 +202,7 @@ public class Main extends JFrame implements ActionListener {
         backButton.addActionListener(this);
 
         JLabel loginLabel = new JLabel("Log In [Admin]");
-        loginLabel.setBounds(220, 100, 170, 40);
+        loginLabel.setBounds(218, 100, 170, 40);
         loginLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         loginLabel.setForeground(new Color(246, 243, 243));
 
