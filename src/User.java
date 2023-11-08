@@ -24,13 +24,14 @@ public class User {
     public boolean changeAccountInfo(String username, String password) {
         this.username = username;
         this.password = password;
+        return false;
     }
     public String requestLoginInfo(String username, String password) {
-
+        return "";
     }
-    public ArrayList<Book> search(String name, String category){
+    //public ArrayList<Book> search(String name, String category){
 
-    }
+    //}
     public void checkout(ArrayList<Book> cart){
         // We need to think of how we will implement this first
         // Do we want a cart? Do we check if the book is available before or after they add to cart?
@@ -45,12 +46,13 @@ public class User {
     public void requestSuggestedBooks(ArrayList<Book> Suggestion ){
 
     }
-    public ArrayList<Book> checkCheckedOutBook(){
+   // public ArrayList<Book> checkCheckedOutBook(){
 
-    }
-    public ArrayList<Book> checkCheckedOutBookHistory{
+    //}
 
-    }
+    //public ArrayList<Book> checkCheckedOutBookHistory (){
+
+    //}
 
     public void buyPremium() {
         // Check if the user has paid first

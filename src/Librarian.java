@@ -8,7 +8,7 @@ public class Librarian extends User{
         super(username, password);
     }
 
-    public boolean addBook(Book book){
+    /*public boolean addBook(Book book){
 
     }
 
@@ -26,6 +26,6 @@ public class Librarian extends User{
 
     public ArrayList<Book> checkSuggestions(){
 
-    }
+    }*/
 
 }
