@@ -21,24 +21,18 @@ public class Main extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Check which button was clicked
         if (e.getActionCommand().equals("Login")) {
-            // Create a new panel or screen for the "Login" action
-            newPanel = createLoginPanel(); // Implement createLoginPanel() method
+            newPanel = createLoginPanel();
         } else if (e.getActionCommand().equals("Sign Up")) {
-            // Create a new panel or screen for the "Sign Up" action
-            newPanel = createSignupPanel(); // Implement createSignupPanel() method
+            newPanel = createSignupPanel();
         } else if (e.getActionCommand().equals("Go Back")) {
-            // Create a new panel or screen for the "Sign Up" action
-            newPanel = startScreenPanel(); // Implement createSignupPanel() method
+            newPanel = startScreenPanel();
         }
 
-        // Remove the current panel and add the new panel
         this.remove(panel);
         panel = newPanel;
         this.add(panel);
 
-        // Repaint the JFrame to update the changes
         this.revalidate();
         this.repaint();
     }
@@ -78,28 +72,62 @@ public class Main extends JFrame implements ActionListener {
 
         return panel;
     }
-    // Implement methods createLoginPanel() and createSignupPanel() to create the new screens
+
     private JPanel createLoginPanel() {
-        JPanel loginPanel = new JPanel();
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel loginPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            }
+        };
+
+        loginPanel.setBackground(new Color(163, 242, 160));
         loginPanel.setLayout(null);
+
+        JLabel applicationLabel = new JLabel("1337h4x0r Library");
+        applicationLabel.setBounds(30,10,400,60);
+        applicationLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        applicationLabel.setForeground(new Color(130, 192, 128));
+
         JButton backButton = new JButton("Go Back");
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
         loginPanel.add(backButton);
-        // Customize the "Login" screen here
+        loginPanel.add(applicationLabel);
         return loginPanel;
     }
 
     private JPanel createSignupPanel() {
-        JPanel signupPanel = new JPanel();
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel signupPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            }
+        };
+        
+        signupPanel.setBackground(new Color(163, 242, 160));
         signupPanel.setLayout(null);
+
+        JLabel applicationLabel = new JLabel("1337h4x0r Library");
+        applicationLabel.setBounds(30,10,400,60);
+        applicationLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        applicationLabel.setForeground(new Color(130, 192, 128));
+
         JButton backButton = new JButton("Go Back");
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
         signupPanel.add(backButton);
-        // Customize the "Login" screen here
+        signupPanel.add(applicationLabel);
         return signupPanel;
     }
 
