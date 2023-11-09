@@ -149,6 +149,9 @@ public class Main extends JFrame implements ActionListener {
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
+        JButton loginButton = new JButton("Log-In");
+        loginButton.setBounds(220, 280, 90, 45);
+
         JLabel loginLabel = new JLabel("Log In");
         loginLabel.setBounds(218, 100, 100, 40);
         loginLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
@@ -161,10 +164,10 @@ public class Main extends JFrame implements ActionListener {
         usernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(220, 225, 100, 30);
+        passwordLabel.setBounds(220, 205, 100, 30);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(215, 255, 200, 30);
+        passwordField.setBounds(215, 235, 200, 30);
 
         userLoginPanel.add(backButton);
         userLoginPanel.add(applicationLabel);
@@ -173,6 +176,7 @@ public class Main extends JFrame implements ActionListener {
         userLoginPanel.add(passwordLabel);
         userLoginPanel.add(passwordField);
         userLoginPanel.add(loginLabel);
+        userLoginPanel.add(loginButton);
         return userLoginPanel;
     }
 
@@ -201,7 +205,10 @@ public class Main extends JFrame implements ActionListener {
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
-        JLabel loginLabel = new JLabel("Sign Up");
+        JButton loginButton = new JButton("Log-In");
+        loginButton.setBounds(220, 280, 90, 45);
+
+        JLabel loginLabel = new JLabel("Log In [Admin]");
         loginLabel.setBounds(218, 100, 170, 40);
         loginLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         loginLabel.setForeground(new Color(246, 243, 243));
@@ -213,10 +220,10 @@ public class Main extends JFrame implements ActionListener {
         usernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(220, 225, 100, 30);
+        passwordLabel.setBounds(220, 205, 100, 30);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(215, 255, 200, 30);
+        passwordField.setBounds(215, 235, 200, 30);
 
         adminLoginPanel.add(backButton);
         adminLoginPanel.add(applicationLabel);
@@ -225,6 +232,7 @@ public class Main extends JFrame implements ActionListener {
         adminLoginPanel.add(passwordLabel);
         adminLoginPanel.add(passwordField);
         adminLoginPanel.add(loginLabel);
+        adminLoginPanel.add(loginButton);
         return adminLoginPanel;
     }
 
@@ -254,10 +262,10 @@ public class Main extends JFrame implements ActionListener {
         backButton.addActionListener(this);
 
         JButton signUpButton = new JButton("Sign-Up");
-        signUpButton.setBounds(220, 300, 90, 45);
+        signUpButton.setBounds(220, 280, 90, 45);
 
         JLabel signUpLabel = new JLabel("Sign Up");
-        signUpLabel.setBounds(218, 100, 170, 40);
+        signUpLabel.setBounds(220, 100, 170, 40);
         signUpLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         signUpLabel.setForeground(new Color(246, 243, 243));
 
@@ -268,10 +276,10 @@ public class Main extends JFrame implements ActionListener {
         usernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Enter Password:");
-        passwordLabel.setBounds(220, 215, 100, 30);
+        passwordLabel.setBounds(220, 205, 100, 30);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(215, 245, 200, 30);
+        passwordField.setBounds(215, 235, 200, 30);
 
         signupPanel.add(backButton);
         signupPanel.add(applicationLabel);
