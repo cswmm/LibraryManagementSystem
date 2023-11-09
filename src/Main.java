@@ -253,6 +253,9 @@ public class Main extends JFrame implements ActionListener {
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
+        JButton signUpButton = new JButton("Sign-Up");
+        signUpButton.setBounds(220, 300, 90, 45);
+
         JLabel signUpLabel = new JLabel("Sign Up");
         signUpLabel.setBounds(218, 100, 170, 40);
         signUpLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
@@ -265,10 +268,10 @@ public class Main extends JFrame implements ActionListener {
         usernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Enter Password:");
-        passwordLabel.setBounds(220, 225, 100, 30);
+        passwordLabel.setBounds(220, 215, 100, 30);
 
         JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(215, 255, 200, 30);
+        passwordField.setBounds(215, 245, 200, 30);
 
         signupPanel.add(backButton);
         signupPanel.add(applicationLabel);
@@ -277,6 +280,7 @@ public class Main extends JFrame implements ActionListener {
         signupPanel.add(usernameField);
         signupPanel.add(passwordLabel);
         signupPanel.add(passwordField);
+        signupPanel.add(signUpButton);
         return signupPanel;
     }
 
