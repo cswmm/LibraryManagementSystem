@@ -1,9 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Library {
-    public static ArrayList<User> users;
+    public static HashMap<String,User> users;
     protected ArrayList<Librarian> librarians;
     protected ArrayList<Book> books;
+    protected ArrayList<Book> requestBook;
 
     public static void givePremium(User u){
         PremiumUser payToWin = (PremiumUser) u;
@@ -12,7 +15,7 @@ public class Library {
 
     // method to add a user to the system
     // called after a user enters their information in signup page
-    public static void addUser(String username, char[] password) throws PasswordException{
+    public static void addUser(String username, char[] password, String security1, String security2) throws PasswordException{
         //Throw exception if password is less than 8 characters
         if (password.length < 8) {
             throw new Minimum8CharactersRequired();
@@ -63,7 +66,20 @@ public class Library {
             PasswordException NumberCharacterMissing = new NumberCharacterMissing();
             throw NumberCharacterMissing;
         }
-        User u = new User(username, password.toString());
-        users.add(u);
+
+        // Add cannot have the same username
+        if(users.containsKey(username)){
+            System.out.println("Username exsisted, please choose another username");
+        }
+        User u = new User(username, password.toString(),security1, security2);
+        users.put(username,u);
     }
+    public ArrayList<Book> getBooks(){ // Get list of book in library system
+        return books;
+    }
+
+    public ArrayList<Librarian> getLibrarians(){
+        return librarians;
+    } // Return librarians list
+
 }
