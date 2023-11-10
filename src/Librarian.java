@@ -1,11 +1,8 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Objects;
 
 public class Librarian extends User{
-    // All of these get from Java Swing window
-    String username;
-    String password;
-    String security1;
-    String security2;
 
     public Librarian(String username, String password, String security1, String security2){
         super(username, password, security1, security2);
@@ -30,8 +27,13 @@ public class Librarian extends User{
         }
     }
 
-    public static void removeUser(String u){
-        Library.users.remove(u);
+    // Librarian type in the username of the user they want to remove
+    public void removeUser(String username){
+        if(users.containsKey(username)){
+            users.remove(username);
+        } else {
+            System.out.println("User not existed, please try again"); // GUI message
+        }
     }
 
     public ArrayList<Book> checkUserCheckedOut(User user){
@@ -40,6 +42,15 @@ public class Librarian extends User{
 
     public ArrayList<Book> checkSuggestions(){
         return requestBook;
+    }
+
+    // Librarian type in book name and a list of genre they would like to add to that book
+    public void addBookGenre(String name, LinkedList<Book.genre> genrelist){
+        for(int i = 0; i < getBooks().size(); i++){
+            if(Objects.equals(getBooks().get(i).getName(), name)){
+                getBooks().get(i).getGenreList().addAll(genrelist);
+            }
+        }
     }
 
 }

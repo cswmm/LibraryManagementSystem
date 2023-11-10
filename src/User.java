@@ -56,31 +56,41 @@ public class User extends Library {
         return "Cannot get user's information. username,password, or security questions' answers are wrong";
         // GUI message
     }
-    public ArrayList<Book> search(String name, String genre){
-        ArrayList<Book> searchlist = new ArrayList<>();
-        if(genre == ""){ // Search with only name
+
+    // User search by type in book name and/or a list of genre
+    public ArrayList<Book> search(String name, LinkedList<Book.genre> genreList){
+        ArrayList<Book> searchList = new ArrayList<>();
+        if(genreList.isEmpty()){ // Search with only name, assign null value to genre when user don't type in genre
             for(Book book : super.getBooks()){
-                if(book.getName() == name){
-                    searchlist.add(book);
+                if(Objects.equals(book.getName(), name)){
+                    searchList.add(book);
                 }
             }
-        } else if(name == ""){ // Search with only category
+        } else if(Objects.equals(name, "")){ // Search with only genre
             for(Book book : super.getBooks()){
-                if(Objects.equals(book.getGenre(), genre)){
-                    searchlist.add(book);
+                for(Book.genre genre : genreList){
+                    if(book.getGenreList().contains(genre)){
+                        searchList.add(book);
+                        break;
+                    }
                 }
             }
-        } else {
+        } else { // Search by both book name and list of genre
             for(Book book : super.getBooks()){
-                if(Objects.equals(book.getGenre(), genre) && Objects.equals(book.getName(), name)){
-                    searchlist.add(book);
+                if(Objects.equals(book.getName(), name)){
+                    for(Book.genre genre : genreList){
+                        if(book.getGenreList().contains(genre)){
+                            searchList.add(book);
+                            break;
+                        }
+                    }
                 }
             }
-            if(searchlist.isEmpty()){
+            if(searchList.isEmpty()){
                 System.out.print("There is no book fit your search"); // GUI message
             }
         }
-        return searchlist;
+        return searchList;
     }
     public void checkout(ArrayList<Book> cart){
         // We need to think of how we will implement this first
