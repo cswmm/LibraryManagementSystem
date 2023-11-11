@@ -1,12 +1,20 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Library {
-    public static HashMap<String,User> users;
+    public static ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
     protected ArrayList<Book> books;
     protected ArrayList<Book> requestBook;
+
+    public Library(){
+        users = new ArrayList<>();
+        librarians = new ArrayList<>();
+        books = new ArrayList<>();
+        requestBook = new ArrayList<>();
+    }
 
     public static void givePremium(User u){
         PremiumUser payToWin = (PremiumUser) u;
@@ -15,65 +23,77 @@ public class Library {
 
     // method to add a user to the system
     // called after a user enters their information in signup page
-    public static void addUser(String username, char[] password, String security1, String security2) throws PasswordException{
-        //Throw exception if password is less than 8 characters
+    public void addUser(String username, char[] password, String security1, String security2) throws PasswordException {
+        User u = new User(username, password, security1, security2);
+        users.add(u);
+    }
+
+    public void passwordRequirement(char[] password) throws PasswordException {
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasSpecialChar = false;
+        boolean hasNumber = false;
+
         if (password.length < 8) {
             throw new Minimum8CharactersRequired();
         }
-        //Create flag for exception
-        boolean flag = true;
-        //Check if password has an upper case char
-        for (int i = 0; i < password.length; i++) {
-            if (Character.isUpperCase(password[i])) {
-                flag = false;
+        else {
+            for (int i = 0; i < password.length; i++){
+                char c = password[i];
+                if (!Character.isDigit(c) && !Character.isLetter(c) && !Character.isWhitespace(c)){
+                    hasSpecialChar = true;
+                }
+                if (Character.isDigit(c)){
+                    hasNumber = true;
+                }
+                if (Character.isUpperCase(c)){
+                    hasUpperCase = true;
+                }
+                if (Character.isLowerCase(c)){
+                    hasLowerCase = true;
+                }
             }
-        }
-        if (flag) {
-            PasswordException UpperCaseCharacterMissing = new UpperCaseCharacterMissing();
-            throw UpperCaseCharacterMissing;
-        }
-        flag = true;
-        //check for lower case character
-        for (int i = 0; i < password.length; i++) {
-            if (Character.isLowerCase(password[i])) {
-                flag = false;
-            }
-        }
-        if (flag) {
-            PasswordException LowerCaseCharacterMissing = new LowerCaseCharacterMissing();
-            throw LowerCaseCharacterMissing;
-        }
-        flag = true;
-        //check if there is a special character
-        for (int i = 0; i < password.length; i++) {
-            if (!Character.isDigit(password[i]) && !Character.isLetter(password[i])
-                    && !Character.isWhitespace(password[i])) {
-                flag = false;
-            }
-        }
-        if (flag) {
-            PasswordException SpecialCharacterMissing = new SpecialCharacterMissing();
-            throw SpecialCharacterMissing;
-        }
-        flag = true;
-        //check for a number character
-        for (int i = 0; i < password.length; i++) {
-            if (Character.isDigit(password[i])) {
-                flag = false;
-            }
-        }
-        if (flag) {
-            PasswordException NumberCharacterMissing = new NumberCharacterMissing();
-            throw NumberCharacterMissing;
         }
 
-        // Add cannot have the same username
-        if(users.containsKey(username)){
-            System.out.println("Username exsisted, please choose another username");
+        if (!hasSpecialChar) {
+            throw new SpecialCharacterMissing();
         }
-        User u = new User(username, password.toString(),security1, security2);
-        users.put(username,u);
+        if (!hasNumber) {
+            throw new NumberCharacterMissing();
+        }
+        if (!hasUpperCase) {
+            throw new UpperCaseCharacterMissing();
+        }
+        if (!hasLowerCase) {
+            throw new LowerCaseCharacterMissing();
+        }
+
     }
+
+    public boolean containsUserName(String username) {
+        if (users != null){
+            for (int i = 0; i < users.size(); i++){
+                if (users.get(i).getUsername().equals(username)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean containsPassword(char[] password) {
+        if (users != null){
+            for (int i = 0; i < users.size(); i++){
+                if (Arrays.equals(users.get(i).getPassword(), password)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public ArrayList<Book> getBooks(){ // Get list of book in library system
         return books;
     }

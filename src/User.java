@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-        import java.util.LinkedList;
-        import java.util.Objects;
+import java.util.LinkedList;
+import java.util.Objects;
 
 public class User extends Library {
     private String username;
-    private String password;
+    private char[] password;
     private String security1;
     private String security2;
 
@@ -18,7 +18,7 @@ public class User extends Library {
 
     public User(){
     }
-    public User(String username, String password, String security1, String security2) {
+    public User(String username, char[] password, String security1, String security2) {
         this.username = username;
         this.password = password;
         this.security1 = security1;
@@ -31,11 +31,11 @@ public class User extends Library {
         Library.users.remove(this);
     }
 
-    public void changeAccountInfo(String username, String password) {
+    public void changeAccountInfo(String username, char[] password) {
         this.username = username;
         this.password = password;
     }
-    public String requestInfo(String username, String password, String security1, String security2) {
+    /*public String requestInfo(String username, String password, String security1, String security2) {
         // GUI show 4 textfield with text: "type in username or password and answer security questions"
         if(Library.users.containsKey(username)){
             if(askSecurity(username,security1,security2)) {
@@ -55,7 +55,7 @@ public class User extends Library {
         }
         return "Cannot get user's information. username,password, or security questions' answers are wrong";
         // GUI message
-    }
+    }*/
 
     // User search by type in book name and/or a list of genre
     public ArrayList<Book> search(String name, LinkedList<Book.genre> genreList){
@@ -124,19 +124,19 @@ public class User extends Library {
         return books;
     }
 
-    public boolean askSecurity(String username, String security1, String security2) {
+    /*public boolean askSecurity(String username, String security1, String security2) {
         if(security1 != Library.users.get(username).getSecurity1() || security2 != Library.users.get(username).getSecurity2()){
             return false;
         } else {
             return true;
         }
-    }
+    }*/
 
     public String getUsername(){
         return this.username;
     }
 
-    public String getPassword(){
+    public char[] getPassword(){
         return this.password;
     }
 
@@ -152,7 +152,7 @@ public class User extends Library {
         this.username = username;
     }
 
-    public void setPassword(String password){
+    public void setPassword(char[] password){
         this.password = password;
     }
 }

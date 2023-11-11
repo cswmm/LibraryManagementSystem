@@ -1,6 +1,5 @@
 public class PasswordException extends Exception{
-    @Override
-    public String toString() {
-        return "PasswordException";
+    public PasswordException(String message) {
+        super(message);
     }
 }

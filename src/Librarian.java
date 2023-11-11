@@ -8,7 +8,7 @@ public class Librarian extends User{
 
     public Librarian(){}
 
-    public Librarian(String username, String password, String security1, String security2){
+    public Librarian(String username, char[] password, String security1, String security2){
         super(username, password, security1, security2);
     }
 
@@ -42,7 +42,7 @@ public class Librarian extends User{
     }
 
     // Librarian type in the username of the user they want to remove
-    public void removeUser(String username){
+    /*public void removeUser(String username){
         if(users.containsKey(username)){
             users.remove(username);
         } else {
@@ -57,7 +57,7 @@ public class Librarian extends User{
             System.out.println("User not existed, please try again"); // GUI message
         }
         return null;
-    }
+    }*/
 
     public ArrayList<Book> checkSuggestions(){
         return requestBook;

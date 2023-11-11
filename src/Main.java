@@ -8,6 +8,14 @@ public class Main extends JFrame implements ActionListener {
     private JPanel newPanel; // New panel for a fresh screen
     private boolean inUserLoginPanel = false;
 
+    private Library library = new Library();
+
+    JTextField usernameField;
+    JPasswordField passwordField;
+    JTextField enterUsernameField;
+    JPasswordField enterPasswordField;
+
+
     public static void main(String[] args) {
         Main app = new Main();
         app.setVisible(true);
@@ -20,6 +28,7 @@ public class Main extends JFrame implements ActionListener {
         this.add(panel);
     }
 
+    //assigns actions to buttons
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Log In")) {
@@ -37,6 +46,31 @@ public class Main extends JFrame implements ActionListener {
             newPanel = createUserLoginPanel();
         } else if (e.getActionCommand().equals("Admin")) {
             newPanel = createAdminLoginPanel();
+        } else if (e.getActionCommand().equals("Sign-Up")){
+            try {
+                System.out.println("Signed Up Fields");
+                System.out.println("Username: " + usernameField.getText());
+                System.out.println(passwordField.getPassword());
+                library.passwordRequirement(passwordField.getPassword());
+                library.addUser(usernameField.getText(), passwordField.getPassword(), "", "");
+                JOptionPane.showMessageDialog(null, "Sign In Successful!");
+
+            } catch (PasswordException ex) {
+                JOptionPane.showMessageDialog(null, "Password error: " + ex.getMessage());
+            }
+        } else if (e.getActionCommand().equals("Log-In")) {
+            System.out.println("Entered Fields");
+            System.out.println("Username: " + enterUsernameField.getText());
+            System.out.println(enterPasswordField.getPassword());
+            if (library.containsUserName(enterUsernameField.getText()) && library.containsPassword(enterPasswordField.getPassword())){
+                newPanel = createUserPagePanel();
+            }
+            else {
+                System.out.println("Invalid");
+            }
+
+        } else if (e.getActionCommand().equals("Log Out")){
+            newPanel = startScreenPanel();
         }
 
         this.remove(panel);
@@ -45,6 +79,43 @@ public class Main extends JFrame implements ActionListener {
 
         this.revalidate();
         this.repaint();
+    }
+
+    private JPanel createUserPagePanel() {
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            }
+        };
+
+        panel.setBackground(new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = new JLabel("1337h4x0r Library");
+        applicationLabel.setBounds(30,10,400,60);
+        applicationLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        applicationLabel.setForeground(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Welcome " + usernameField.getText() + "!");
+        nameLabel.setBounds(250,100,400,60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        JButton logOutButton = new JButton("Log Out");
+        logOutButton.setBounds(475, 15, 100, 50);
+        logOutButton.addActionListener(this);
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(logOutButton);
+
+        return panel;
     }
 
     private JPanel startScreenPanel(){
@@ -151,6 +222,7 @@ public class Main extends JFrame implements ActionListener {
 
         JButton loginButton = new JButton("Log-In");
         loginButton.setBounds(220, 280, 90, 45);
+        loginButton.addActionListener(this);
 
         JLabel loginLabel = new JLabel("Log In");
         loginLabel.setBounds(218, 100, 100, 40);
@@ -160,21 +232,21 @@ public class Main extends JFrame implements ActionListener {
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(220, 145, 100, 30);
 
-        JTextField usernameField = new JTextField();
-        usernameField.setBounds(215, 175, 200, 30);
+        enterUsernameField = new JTextField();
+        enterUsernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(220, 205, 100, 30);
 
-        JPasswordField passwordField = new JPasswordField();
-        passwordField.setBounds(215, 235, 200, 30);
+        enterPasswordField = new JPasswordField();
+        enterPasswordField.setBounds(215, 235, 200, 30);
 
         userLoginPanel.add(backButton);
         userLoginPanel.add(applicationLabel);
         userLoginPanel.add(usernameLabel);
-        userLoginPanel.add(usernameField);
+        userLoginPanel.add(enterUsernameField);
         userLoginPanel.add(passwordLabel);
-        userLoginPanel.add(passwordField);
+        userLoginPanel.add(enterPasswordField);
         userLoginPanel.add(loginLabel);
         userLoginPanel.add(loginButton);
         return userLoginPanel;
@@ -205,7 +277,7 @@ public class Main extends JFrame implements ActionListener {
         backButton.setBounds(475, 15, 100, 50);
         backButton.addActionListener(this);
 
-        JButton loginButton = new JButton("Log-In");
+        JButton loginButton = new JButton("Log-In [A]");
         loginButton.setBounds(220, 280, 90, 45);
 
         JLabel loginLabel = new JLabel("Log In [Admin]");
@@ -248,7 +320,7 @@ public class Main extends JFrame implements ActionListener {
                 g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
             }
         };
-        
+
         signupPanel.setBackground(new Color(163, 242, 160));
         signupPanel.setLayout(null);
 
@@ -263,6 +335,7 @@ public class Main extends JFrame implements ActionListener {
 
         JButton signUpButton = new JButton("Sign-Up");
         signUpButton.setBounds(220, 280, 90, 45);
+        signUpButton.addActionListener(this);
 
         JLabel signUpLabel = new JLabel("Sign Up");
         signUpLabel.setBounds(220, 100, 170, 40);
@@ -272,13 +345,13 @@ public class Main extends JFrame implements ActionListener {
         JLabel usernameLabel = new JLabel("Enter Username:");
         usernameLabel.setBounds(220, 145, 150, 30);
 
-        JTextField usernameField = new JTextField();
+        usernameField = new JTextField();
         usernameField.setBounds(215, 175, 200, 30);
 
         JLabel passwordLabel = new JLabel("Enter Password:");
         passwordLabel.setBounds(220, 205, 100, 30);
 
-        JPasswordField passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setBounds(215, 235, 200, 30);
 
         signupPanel.add(backButton);
