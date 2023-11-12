@@ -15,6 +15,9 @@ public class Main extends JFrame implements ActionListener {
     JTextField enterUsernameField;
     JPasswordField enterPasswordField;
 
+    private JButton optionsButton;
+    private String password;
+
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -53,6 +56,7 @@ public class Main extends JFrame implements ActionListener {
                 System.out.println(passwordField.getPassword());
                 library.passwordRequirement(passwordField.getPassword());
                 library.addUser(usernameField.getText(), passwordField.getPassword(), "", "");
+                password = String.valueOf(passwordField.getPassword());
                 JOptionPane.showMessageDialog(null, "Sign In Successful!");
 
             } catch (PasswordException ex) {
@@ -69,8 +73,34 @@ public class Main extends JFrame implements ActionListener {
                 System.out.println("Invalid");
             }
 
+        } else if (e.getActionCommand().equals("Options")) {
+            //creates drop menu when options menu is pressed
+            JPopupMenu popupMenu = new JPopupMenu();
+            JMenuItem menuItem1 = new JMenuItem("Account Info");
+            JMenuItem menuItem2 = new JMenuItem("Buy Premium");
+            JMenuItem menuItem3 = new JMenuItem("Log Out");
+
+            menuItem1.addActionListener(this);
+            menuItem2.addActionListener(this);
+            menuItem3.addActionListener(this);
+
+            popupMenu.add(menuItem1);
+            popupMenu.add(menuItem2);
+            popupMenu.add(menuItem3);
+
+            popupMenu.show(optionsButton, 0, optionsButton.getHeight());
+
         } else if (e.getActionCommand().equals("Log Out")){
             newPanel = startScreenPanel();
+        } else if (e.getActionCommand().equals("Account Info")){
+            String enterPassword = JOptionPane.showInputDialog("Enter password to see info");
+            //newPanel = startScreenPanel();
+        } else if (e.getActionCommand().equals("Buy Premium")) {
+            String upgradePremium = JOptionPane.showInputDialog("Upgrade to premium for $5 a month. Enter your password");
+            if (upgradePremium.equals(password)){
+                System.out.println("Upgraded to Premium");
+            }
+            //newPanel = startScreenPanel();
         }
 
         this.remove(panel);
@@ -79,43 +109,6 @@ public class Main extends JFrame implements ActionListener {
 
         this.revalidate();
         this.repaint();
-    }
-
-    private JPanel createUserPagePanel() {
-        inUserLoginPanel = false;
-        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
-
-        JPanel panel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.WHITE);
-                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-            }
-        };
-
-        panel.setBackground(new Color(197, 160, 242));
-        panel.setLayout(null);
-
-        JLabel applicationLabel = new JLabel("1337h4x0r Library");
-        applicationLabel.setBounds(30,10,400,60);
-        applicationLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
-        applicationLabel.setForeground(new Color(169, 138, 208));
-
-        JLabel nameLabel = new JLabel("Welcome " + usernameField.getText() + "!");
-        nameLabel.setBounds(250,100,400,60);
-        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
-        nameLabel.setForeground(Color.white);
-
-        JButton logOutButton = new JButton("Log Out");
-        logOutButton.setBounds(475, 15, 100, 50);
-        logOutButton.addActionListener(this);
-
-        panel.add(applicationLabel);
-        panel.add(nameLabel);
-        panel.add(logOutButton);
-
-        return panel;
     }
 
     private JPanel startScreenPanel(){
@@ -151,6 +144,43 @@ public class Main extends JFrame implements ActionListener {
         panel.add(applicationLabel);
         panel.add(loginButton);
         panel.add(signupButton);
+
+        return panel;
+    }
+
+    private JPanel createUserPagePanel() {
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.setColor(Color.WHITE);
+                g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            }
+        };
+
+        panel.setBackground(new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = new JLabel("1337h4x0r Library");
+        applicationLabel.setBounds(30,10,400,60);
+        applicationLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        applicationLabel.setForeground(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Welcome " + usernameField.getText() + "!");
+        nameLabel.setBounds(250,100,400,60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Options");
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
 
         return panel;
     }
