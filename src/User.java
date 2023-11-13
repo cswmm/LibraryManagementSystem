@@ -15,6 +15,8 @@ public class User extends Library {
 
     private ArrayList<Book> checkoutHistory;
 
+    private boolean isPremium;
+
 
     public User(){
     }
@@ -35,6 +37,7 @@ public class User extends Library {
         this.username = username;
         this.password = password;
     }
+
     /*public String requestInfo(String username, String password, String security1, String security2) {
         // GUI show 4 textfield with text: "type in username or password and answer security questions"
         if(Library.users.containsKey(username)){
@@ -154,5 +157,13 @@ public class User extends Library {
 
     public void setPassword(char[] password){
         this.password = password;
+    }
+
+    public boolean getIsPremium(){
+        return isPremium;
+    }
+
+    public void setIsPremium(Boolean isPremium){
+        this.isPremium = isPremium;
     }
 }

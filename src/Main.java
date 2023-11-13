@@ -93,7 +93,10 @@ public class Main extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals("Log Out")){
             newPanel = startScreenPanel();
         } else if (e.getActionCommand().equals("Account Info")){
-            String enterPassword = JOptionPane.showInputDialog("Enter password to see info");
+            String enterPassword = JOptionPane.showInputDialog("Enter password to see account information");
+            if (enterPassword.equals(password)){
+                System.out.println("Viewed Account Profile");
+            }
             //newPanel = startScreenPanel();
         } else if (e.getActionCommand().equals("Buy Premium")) {
             String upgradePremium = JOptionPane.showInputDialog("Upgrade to premium for $5 a month. Enter your password");
@@ -394,5 +397,17 @@ public class Main extends JFrame implements ActionListener {
         signupPanel.add(signUpButton);
         return signupPanel;
     }
+
+    /*private void showUserProfile(User user) {
+        String name = user.getFirstName() + " " + user.getLastName();
+        String email = user.getEmail();
+        String userName = user.getUsername();
+        String password = user.getPassword();
+
+        String profileMessage = "Name: " + name + "\n" + "Email: " + email + "\n" + "User Name: " + userName + "\n" + "Password: " + password;
+
+        JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
+    }*/
+
 
 }
