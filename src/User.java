@@ -159,11 +159,11 @@ public class User extends Library {
         this.password = password;
     }
 
-    public boolean getIsPremium(){
+    public boolean hasPremium(){
         return isPremium;
     }
 
-    public void setIsPremium(Boolean isPremium){
+    public void setPremium(Boolean isPremium){
         this.isPremium = isPremium;
     }
 }

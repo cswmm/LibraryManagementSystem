@@ -28,6 +28,15 @@ public class Library {
         users.add(u);
     }
 
+    public User getUser(String username, char[] password){
+        for (int i = 0; i < users.size(); i++){
+            if (users.get(i).getUsername().equals(username) && Arrays.equals(users.get(i).getPassword(), password)){
+                return users.get(i);
+            }
+        }
+        return null;
+    }
+
     public void passwordRequirement(char[] password) throws PasswordException {
         boolean hasUpperCase = false;
         boolean hasLowerCase = false;
