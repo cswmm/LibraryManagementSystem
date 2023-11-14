@@ -178,6 +178,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(checkRequestButton);
         //End of add buttons
 
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
