@@ -195,14 +195,7 @@ public class Main extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals("Go")){
             System.out.println("Detected");
             results.clear();
-            if (searchByGenre){
-                for (int i = 0; i < library.books.size(); i++){
-                    if (library.books.get(i).getGenre().equals(searchField.getText())){
-                        results.add(library.books.get(i));
-                        System.out.println("book added");
-                    }
-                }
-            }
+
             if (searchButton.getText().equals("Search by Genre")){
                 for (int i = 0; i < library.books.size(); i++){
                     if (library.books.get(i).getGenre().equals(searchField.getText())){
