@@ -7,6 +7,7 @@ public class User extends Library {
     private char[] password;
     private String security1;
     private String security2;
+    private boolean isPremium = false; // User initially not Premium User
 
     private LinkedList<String> securityAnswer;
 
@@ -14,8 +15,6 @@ public class User extends Library {
     private ArrayList<Book> bookhistory;
 
     private ArrayList<Book> checkoutHistory;
-
-    private boolean isPremium;
 
 
     public User(){
@@ -38,27 +37,24 @@ public class User extends Library {
         this.password = password;
     }
 
-    /*public String requestInfo(String username, String password, String security1, String security2) {
-        // GUI show 4 textfield with text: "type in username or password and answer security questions"
-        if(Library.users.containsKey(username)){
-            if(askSecurity(username,security1,security2)) {
-                return "Username: " + getUsername() + "\nPassword:  " + getPassword() +
-                        "\nSecurity answer 1: " + getSecurity1() + "\nSecurity answer 2: " + getSecurity2();
+    // Click a button and enter username or password and answer 2 security questions
+    // to retrieve login information
+    public String forgetUsernamePassword(String username, String password, String security1, String security2){
+        int count = 0;
+        for(User u : users){
+            if(u.getUsername() == username && u.getSecurity1() == security1 && u.getSecurity2() == security2){
+                count++;
+                return "Username: "+ u.getUsername() + " Password: "+ u.getPassword().toString();
+            } else if (u.getPassword().toString() == password && u.getSecurity1() == security1 && u.getSecurity2() == security2) {
+                count++;
+                return "Username: "+ u.getUsername() + " Password: "+ u.getPassword().toString();
             }
-        } else {
-            for(int i = 0; i < Library.users.size(); i++){
-                if(Objects.equals(Library.users.get(String.valueOf(i)).getPassword(), password)){
-                    if(askSecurity(username,security1,security2)) {
-                        return "Username: " + getUsername() + "\nPassword:  " + getPassword() +
-                                "\nSecurity answer 1: " + getSecurity1() + "\nSecurity answer 2: " + getSecurity2();
-                    }
-                }
-            }
-
         }
-        return "Cannot get user's information. username,password, or security questions' answers are wrong";
-        // GUI message
-    }*/
+        if(count == 0){
+            return "Information not match any account";
+        }
+        return "";
+    }
 
     // User search by type in book name and/or a list of genre
     /*public ArrayList<Book> search(String name, LinkedList<Book.genre> genreList){
@@ -121,19 +117,18 @@ public class User extends Library {
     public void buyPremium() {
         // Check if the user has paid first
         Library.givePremium(this);
+        isPremium = true;
+    }
+
+    //Click a button to get all information of the account
+    public String getInformation(){
+        return "Username: " + getUsername() + "\nPassword:  " + getPassword() +
+                "\nSecurity answer 1: " + getSecurity1() + "\nSecurity answer 2: " + getSecurity2();
     }
 
     public ArrayList<Book> getBooks() { // I believe getBooks() and checkCheckedOutBook() are the same
         return books;
     }
-
-    /*public boolean askSecurity(String username, String security1, String security2) {
-        if(security1 != Library.users.get(username).getSecurity1() || security2 != Library.users.get(username).getSecurity2()){
-            return false;
-        } else {
-            return true;
-        }
-    }*/
 
     public String getUsername(){
         return this.username;
@@ -163,7 +158,8 @@ public class User extends Library {
         return isPremium;
     }
 
-    public void setPremium(Boolean isPremium){
+    protected void setPremium(Boolean isPremium){
         this.isPremium = isPremium;
     }
+    //User cannot set their premium status
 }
