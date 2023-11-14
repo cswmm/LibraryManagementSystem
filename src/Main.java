@@ -30,6 +30,9 @@ public class Main extends JFrame implements ActionListener {
 
     ArrayList<Book>results = new ArrayList<>();
 
+    JPopupMenu popupMenu2;
+
+
     public static void main(String[] args) {
         Main app = new Main();
         app.setVisible(true);
@@ -148,11 +151,6 @@ public class Main extends JFrame implements ActionListener {
             JMenuItem menuItem3 = new JMenuItem("Genre");
             JMenuItem menuItem4 = new JMenuItem("Year");
 
-            menuItem1.addActionListener(this);
-            menuItem2.addActionListener(this);
-            menuItem3.addActionListener(this);
-            menuItem4.addActionListener(this);
-
             menuItem1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -213,10 +211,11 @@ public class Main extends JFrame implements ActionListener {
                     }
                 }
 
-                JPopupMenu popupMenu2 = new JPopupMenu();
+                popupMenu2 = new JPopupMenu();
 
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
@@ -227,8 +226,9 @@ public class Main extends JFrame implements ActionListener {
                     });
                     popupMenu2.add(menuItemOne);
                 }
+                System.out.println(results.size());
 
-                popupMenu2.show(goButton, 0, goButton.getHeight());
+                popupMenu2.show(searchField, 0, searchField.getHeight());
 
             }
 
@@ -292,6 +292,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    //user page when you log in
     private JPanel createUserPagePanel() {
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
@@ -311,12 +312,12 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.addActionListener(this);
 
         searchField = new JTextField(20);
-        searchField.setBounds(200, 200, 300, 60);
+        searchField.setBounds(150, 200, 300, 60);
         searchButton = new JButton("Search");
-        searchButton.setBounds(100, 200, 100, 60);
+        searchButton.setBounds(50, 200, 100, 60);
         searchButton.addActionListener(this);
         goButton = new JButton("Go");
-        goButton.setBounds(300, 275, 100, 60);
+        goButton.setBounds(450, 200, 100, 60);
         goButton.addActionListener(this);
 
 
@@ -332,6 +333,7 @@ public class Main extends JFrame implements ActionListener {
 
     }
 
+    //premium user page when you log in
     private JPanel createPremiumUserPagePanel() {
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
