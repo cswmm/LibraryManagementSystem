@@ -151,9 +151,32 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Options");
+        optionsButton = new JButton("Log Out"); // Change from Options to Log out
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
+
+        // Add buttons, each button is a function
+        JButton addBookButton = new JButton("Add Book");
+        addBookButton.setBounds(200,170,200,50);
+        addBookButton.addActionListener(this);
+
+        JButton addUserButton = new JButton("Add User");
+        addUserButton.setBounds(200,240,200,50);
+        addUserButton.addActionListener(this);
+
+        JButton removeUserButton = new JButton("Remove User");
+        removeUserButton.setBounds(200,310,200,50);
+        removeUserButton.addActionListener(this);
+
+        JButton checkRequestButton = new JButton("Check Book Request");
+        checkRequestButton.setBounds(200,380,200,50);
+        checkRequestButton.addActionListener(this);
+
+        panel.add(addBookButton);
+        panel.add(addUserButton);
+        panel.add(removeUserButton);
+        panel.add(checkRequestButton);
+        //End of add buttons
 
         panel.add(applicationLabel);
         panel.add(nameLabel);
