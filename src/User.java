@@ -61,7 +61,7 @@ public class User extends Library {
     }*/
 
     // User search by type in book name and/or a list of genre
-    public ArrayList<Book> search(String name, LinkedList<Book.genre> genreList){
+    /*public ArrayList<Book> search(String name, LinkedList<Book.genre> genreList){
         ArrayList<Book> searchList = new ArrayList<>();
         if(genreList.isEmpty()){ // Search with only name, assign null value to genre when user don't type in genre
             for(Book book : super.getBooks()){
@@ -94,7 +94,7 @@ public class User extends Library {
             }
         }
         return searchList;
-    }
+    }*/
     public void checkout(ArrayList<Book> cart){
         // We need to think of how we will implement this first
         // Do we want a cart? Do we check if the book is available before or after they add to cart?

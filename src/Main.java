@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main extends JFrame implements ActionListener {
@@ -21,6 +22,13 @@ public class Main extends JFrame implements ActionListener {
     private String userName;
 
     JButton searchButton;
+    JButton goButton;
+
+    JTextField searchField;
+
+    private boolean searchByGenre = false;
+
+    ArrayList<Book>results = new ArrayList<>();
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -30,6 +38,8 @@ public class Main extends JFrame implements ActionListener {
     public Main() {
         Librarian admin = new Librarian("Mr. Librarian", "admin".toCharArray(), "", "");
         User quick = new User("D", "davis123!".toCharArray(), "", "");
+        library.books.add(new Book("Hello","World", "comedy", 2001));
+        library.books.add(new Book("Bye","Universe", "comedy", 2001));
         //library.users.add(quick);
         library.librarians.add(admin);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
@@ -160,6 +170,7 @@ public class Main extends JFrame implements ActionListener {
             menuItem3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    searchByGenre = true;
                     searchButton.setText("Search by Genre");
                 }
             });
@@ -183,6 +194,44 @@ public class Main extends JFrame implements ActionListener {
                     popupMenu.show(searchButton, 0, searchButton.getHeight());
                 };
             });
+        } else if (e.getActionCommand().equals("Go")){
+            System.out.println("Detected");
+            results.clear();
+            if (searchByGenre){
+                for (int i = 0; i < library.books.size(); i++){
+                    if (library.books.get(i).getGenre().equals(searchField.getText())){
+                        results.add(library.books.get(i));
+                        System.out.println("book added");
+                    }
+                }
+            }
+            if (searchButton.getText().equals("Search by Genre")){
+                for (int i = 0; i < library.books.size(); i++){
+                    if (library.books.get(i).getGenre().equals(searchField.getText())){
+                        System.out.println("Added to result list");
+                        results.add(library.books.get(i));
+                    }
+                }
+
+                JPopupMenu popupMenu2 = new JPopupMenu();
+
+                for (int i = 0; i < results.size(); i++){
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
+                    int finalI = i;
+                    menuItemOne.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //add check out button to J Option pane that adds to users check out list
+                            showBookInfo(results.get(finalI));
+                        }
+                    });
+                    popupMenu2.add(menuItemOne);
+                }
+
+                popupMenu2.show(goButton, 0, goButton.getHeight());
+
+            }
+
         }
 
         this.remove(panel);
@@ -261,11 +310,14 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
-        JTextField searchField = new JTextField(20);
-        searchField.setBounds(250, 200, 400, 60);
+        searchField = new JTextField(20);
+        searchField.setBounds(200, 200, 300, 60);
         searchButton = new JButton("Search");
-        searchButton.setBounds(150, 200, 100, 60);
+        searchButton.setBounds(100, 200, 100, 60);
         searchButton.addActionListener(this);
+        goButton = new JButton("Go");
+        goButton.setBounds(300, 275, 100, 60);
+        goButton.addActionListener(this);
 
 
         panel.add(applicationLabel);
@@ -273,6 +325,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(optionsButton);
         panel.add(searchField);
         panel.add(searchButton);
+        panel.add(goButton);
 
         return panel;
 
@@ -467,6 +520,37 @@ public class Main extends JFrame implements ActionListener {
         String profileMessage = "Name: " + name + "\n" + "Password: " + password;
 
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showBookInfo(Book book) {
+        String name = book.getName();
+        String author = book.getAuthor();
+        String genre = book.getGenre();
+        String year = String.valueOf(book.getYear());
+
+        String bookMessage = " Title: " + name + "\n" + "Author: " + author + "\n" + "Genre: " + genre + "\n" + "year: " + year;
+
+        // Create an array of options (buttons)
+        Object[] options = {"OK", "Check Out"};
+
+        // Display the JOptionPane with a custom option panel
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                bookMessage,
+                "Book",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        // Handle the user's choice
+        if (choice == 1) {
+            // User clicked "Check Out"
+            // Add your checkout logic here
+            JOptionPane.showMessageDialog(this, "Book Checked Out!");
+        }
     }
 
     public JPanel createUpperBorderDisplay(Rectangle rectangle, Color c){

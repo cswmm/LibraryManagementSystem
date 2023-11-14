@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class Library {
     public ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
-    protected ArrayList<Book> books;
+    public ArrayList<Book> books;
     protected ArrayList<Book> requestBook;
 
     public Library(){

@@ -13,7 +13,7 @@ public class Librarian extends User{
     }
 
     // Librarian enter book information to add book to library system
-    public void addBook(String name, String author, LinkedList<Book.genre> genreList, int year, Date dueDate){
+    public void addBook(String name, String author, String genre, int year, Date dueDate){
         int count = 0;
         for(Book book : ((Library)this).getBooks()){
             // Check using only name, author, and year
@@ -23,7 +23,7 @@ public class Librarian extends User{
             }
         }
         if(count == 0) {
-            Book book = new Book(name, author, genreList, year, dueDate);
+            Book book = new Book(name, author, genre, year);
             ((Library)this).getBooks().add(book);
         }
     }
@@ -64,12 +64,12 @@ public class Librarian extends User{
     }
 
     // Librarian type in book name and a list of genre they would like to add to that book
-    public void addBookGenre(String name, LinkedList<Book.genre> genreList){
+    /*public void addBookGenre(String name, LinkedList<Book.genre> genreList){
         for(int i = 0; i < getBooks().size(); i++){
             if(Objects.equals(getBooks().get(i).getName(), name)){
                 getBooks().get(i).getGenreList().addAll(genreList);
             }
         }
-    }
+    }*/
 
 }

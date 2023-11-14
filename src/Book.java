@@ -1,5 +1,5 @@
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class Book {
 
@@ -7,10 +7,10 @@ public class Book {
         COMEDY, SCIENCE_FICTION, ROMANCE, FANTASY, ACTION, DYSTOPIA, HISTORY
     }
 
-    private LinkedList<genre> genreList = new LinkedList<>();
+    private ArrayList<genre> genreList = new ArrayList<>();
     private String name;
     private String author;
-    private LinkedList<genre> genre;
+    private String genre;
     private int year;
 
     private Date dueDate = null; // book in library don't have due date
@@ -18,12 +18,12 @@ public class Book {
     public Book(){
     }
 
-    public Book(String name,String author, LinkedList<genre> genrelist, int year, Date dueDate){
+    public Book(String name, String author, String genre, int year/* Date dueDate*/){
         this.name = name;
         this.author = author;
-        this.genreList = genrelist;
+        this.genre = genre;
         this.year = year;
-        this.dueDate = dueDate;
+        //this.dueDate = dueDate;
     }
     public String getName(){
         return this.name;
@@ -35,14 +35,15 @@ public class Book {
     public int getYear(){
         return this.year;
     }
+    public String getGenre() {
+        return this.genre;
+    }
 
     public Date getDueDate(){
         return this.dueDate;
     }
 
-    public LinkedList<genre> getGenreList(){
-        return genreList;
-    }
+    //public LinkedList<genre> getGenreList(){ return genreList; }
 
     public void setName(String name) {
         this.name = name;
@@ -52,9 +53,9 @@ public class Book {
         this.author = author;
     }
 
-    public void setGenreList(LinkedList<genre> genreList) {
+    /*public void setGenreList(LinkedList<genre> genreList) {
         this.genreList = genreList;
-    }
+    }*/
 
     public void setYear(int year) {
         this.year = year;
@@ -64,4 +65,8 @@ public class Book {
         this.dueDate = dueDate;
     }
 
+    @Override
+    public String toString() {
+        return "Name: " + getName();
+    }
 }
