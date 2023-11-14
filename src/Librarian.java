@@ -42,22 +42,32 @@ public class Librarian extends User{
     }
 
     // Librarian type in the username of the user they want to remove
-    /*public void removeUser(String username){
-        if(users.containsKey(username)){
-            users.remove(username);
-        } else {
+    public void removeUser(String username){
+        int count = 0;
+        for(User u : users) {
+            if (u.getUsername() == username) {
+                count++;
+                users.remove(username);
+            }
+        }
+        if(count == 0) {
             System.out.println("User not existed, please try again"); // GUI message
         }
     }
 
     public ArrayList<Book> checkUserCheckedOut(String username){
-        if(users.containsKey(username)){
-            return users.get(username).getBooks();
-        } else {
-            System.out.println("User not existed, please try again"); // GUI message
-        }
-        return null;
-    }*/
+        int count = 0;
+       for(User u : users){
+           if(u.getUsername() == username){
+               count++;
+               return u.getBooks();
+           }
+       }
+       if(count == 0) {
+           System.out.println("No account with that username");
+       }
+       return null;
+    }
 
     public ArrayList<Book> checkSuggestions(){
         return requestBook;

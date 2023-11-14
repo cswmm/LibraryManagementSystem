@@ -160,9 +160,9 @@ public class Main extends JFrame implements ActionListener {
         addBookButton.setBounds(200,170,200,50);
         addBookButton.addActionListener(this);
 
-        JButton addUserButton = new JButton("Add User");
-        addUserButton.setBounds(200,240,200,50);
-        addUserButton.addActionListener(this);
+        JButton removeBookButton = new JButton("Add User");
+        removeBookButton.setBounds(200,240,200,50);
+        removeBookButton.addActionListener(this);
 
         JButton removeUserButton = new JButton("Remove User");
         removeUserButton.setBounds(200,310,200,50);
@@ -173,7 +173,7 @@ public class Main extends JFrame implements ActionListener {
         checkRequestButton.addActionListener(this);
 
         panel.add(addBookButton);
-        panel.add(addUserButton);
+        panel.add(removeBookButton);
         panel.add(removeUserButton);
         panel.add(checkRequestButton);
         //End of add buttons
