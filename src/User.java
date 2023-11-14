@@ -158,8 +158,8 @@ public class User extends Library {
         return isPremium;
     }
 
-    /*public void setPremium(Boolean isPremium){
+    protected void setPremium(Boolean isPremium){
         this.isPremium = isPremium;
-    }*/
+    }
     //User cannot set their premium status
 }
