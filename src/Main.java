@@ -20,6 +20,8 @@ public class Main extends JFrame implements ActionListener {
     private String password;
     private String userName;
 
+    JButton searchButton;
+
     public static void main(String[] args) {
         Main app = new Main();
         app.setVisible(true);
@@ -27,6 +29,8 @@ public class Main extends JFrame implements ActionListener {
 
     public Main() {
         Librarian admin = new Librarian("Mr. Librarian", "admin".toCharArray(), "", "");
+        User quick = new User("D", "davis123!".toCharArray(), "", "");
+        //library.users.add(quick);
         library.librarians.add(admin);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
@@ -127,6 +131,58 @@ public class Main extends JFrame implements ActionListener {
                 library.getUser(userName, password.toCharArray()).setPremium(true);
                 JOptionPane.showMessageDialog(null, "Welcome to the premium club. Sign in again to access your premium account");
             }
+        } else if (e.getActionCommand().equals("Search")) {
+            JPopupMenu popupMenu = new JPopupMenu();
+            JMenuItem menuItem1 = new JMenuItem("Name");
+            JMenuItem menuItem2 = new JMenuItem("Author");
+            JMenuItem menuItem3 = new JMenuItem("Genre");
+            JMenuItem menuItem4 = new JMenuItem("Year");
+
+            menuItem1.addActionListener(this);
+            menuItem2.addActionListener(this);
+            menuItem3.addActionListener(this);
+            menuItem4.addActionListener(this);
+
+            menuItem1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    searchButton.setText("Search by Name");
+                }
+            });
+
+            menuItem2.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    searchButton.setText("Search by Author");
+                }
+            });
+
+            menuItem3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    searchButton.setText("Search by Genre");
+                }
+            });
+
+            menuItem4.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    searchButton.setText("Search by Year");
+                }
+            });
+
+            popupMenu.add(menuItem1);
+            popupMenu.add(menuItem2);
+            popupMenu.add(menuItem3);
+            popupMenu.add(menuItem4);
+
+            searchButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Show the drop-down menu when the search button is clicked
+                    popupMenu.show(searchButton, 0, searchButton.getHeight());
+                };
+            });
         }
 
         this.remove(panel);
@@ -205,11 +261,22 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        JTextField searchField = new JTextField(20);
+        searchField.setBounds(250, 200, 400, 60);
+        searchButton = new JButton("Search");
+        searchButton.setBounds(150, 200, 100, 60);
+        searchButton.addActionListener(this);
+
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
+        panel.add(searchField);
+        panel.add(searchButton);
 
         return panel;
+
+
     }
 
     private JPanel createPremiumUserPagePanel() {

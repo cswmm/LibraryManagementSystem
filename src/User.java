@@ -30,7 +30,7 @@ public class User extends Library {
     public void terminateAccount() {
         username = null;
         password = null;
-        Library.users.remove(this);
+        users.remove(this);
     }
 
     public void changeAccountInfo(String username, char[] password) {
