@@ -42,12 +42,9 @@ public class Main extends JFrame implements ActionListener {
         library.initializeUsers();
         library.initializeBooks();
         Librarian admin = new Librarian("Mr. Librarian", "admin".toCharArray(), "", "");
-        User quick = new User("D", "davis123!".toCharArray(), "", "");
         library.addBook("Hello","World", "comedy", 2001);
         library.addBook("Bye", "Universe", "comedy", 2001);
-        //library.users.add(quick);
         library.librarians.add(admin);
-        library.users.add(quick);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
         panel = startScreenPanel();
@@ -819,9 +816,63 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        JLabel usernameLLabel = new JLabel("Enter Username:");
+        usernameLLabel.setBounds(210, 145, 150, 30);
+
+        JTextField usernameLField = new JTextField();
+        usernameLField.setBounds(205, 175, 200, 30);
+
+        JLabel passwordLLabel = new JLabel("Enter Password:");
+        passwordLLabel.setBounds(210, 205, 150, 30);
+
+        JPasswordField passwordLField = new JPasswordField();
+        passwordLField.setBounds(205, 235, 200, 30);
+
+        JLabel security1LLabel = new JLabel("Enter security 1: What is your mother's maiden name?");
+        security1LLabel.setBounds(210,265,300,30);
+
+        JTextField security1LField = new JTextField();
+        security1LField.setBounds(205,295,200,30);
+
+        JLabel security2LLabel = new JLabel("Enter security 2: What is the name of your first pet?");
+        security2LLabel.setBounds(210,325,300,30);
+
+        JTextField security2LField = new JTextField();
+        security2LField.setBounds(205,355,200,30);
+
+        JButton addUserButton = new JButton("Add User");
+        addUserButton.setBounds(220, 400, 90, 45);
+        addUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if(library.containsUserName(usernameLField.getText())){
+                        JOptionPane.showMessageDialog(null, "Username existed, please choose another username");
+                    }
+                    library.passwordRequirement(passwordLField.getPassword());
+                    //creates and adds user to library
+                    library.addUser(usernameLField.getText(), password.toCharArray(),security1LField.getText(), security2LField.getText());
+                    JOptionPane.showMessageDialog(null, "User account added");
+
+                } catch (PasswordException ex) {
+                    JOptionPane.showMessageDialog(null, "Password error: " + ex.getMessage());
+                }
+            }
+        });
+
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
+        panel.add(usernameLLabel);
+        panel.add(usernameLField);
+        panel.add(passwordLLabel);
+        panel.add(passwordLField);
+        panel.add(security1LLabel);
+        panel.add(security1LField);
+        panel.add(security2LLabel);
+        panel.add(security2LField);
+        panel.add(addUserButton);
 
         return panel;
     }
@@ -844,9 +895,39 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        JLabel usernameLLabel = new JLabel("Enter Username:");
+        usernameLLabel.setBounds(210, 145, 150, 30);
+
+        JTextField usernameLField = new JTextField();
+        usernameLField.setBounds(205, 175, 200, 30);
+
+        JButton removeUserButton = new JButton("Remove User");
+        removeUserButton.setBounds(220, 400, 90, 45);
+        removeUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int count = 0;
+               for(int i = 0; i < library.users.size(); i++){
+                   if(library.users.get(i).getUsername() == usernameLField.getText()){
+                       count++;
+                       User user = library.users.get(i);
+                       library.users.remove(user);
+                   }
+               }
+               if(count == 0 ){
+                   JOptionPane.showMessageDialog(null, "Username not exist, please enter anther username");
+               } else {
+                   JOptionPane.showMessageDialog(null, "User account removed");
+               }
+            }
+        });
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
+        panel.add(usernameLLabel);
+        panel.add(usernameLField);
+        panel.add(removeUserButton);
 
         return panel;
     }
