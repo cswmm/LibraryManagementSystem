@@ -47,6 +47,7 @@ public class Main extends JFrame implements ActionListener {
         library.addBook("Bye", "Universe", "comedy", 2001);
         //library.users.add(quick);
         library.librarians.add(admin);
+        library.users.add(quick);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
         panel = startScreenPanel();
@@ -311,6 +312,16 @@ public class Main extends JFrame implements ActionListener {
 
             }
 
+        } else if(e.getActionCommand().equals("Add Book")){ // Librarian-Add Book
+            newPanel = createAddBookPanel();
+        } else if(e.getActionCommand().equals("Remove Book")){ // Librarian-Remove Book
+            newPanel = createRemoveBookPanel();
+        } else if(e.getActionCommand().equals("Add User")){// Librarian Add User
+            newPanel = createAddUserPanel();
+        } else if(e.getActionCommand().equals("Remove User")){// Remove User
+            newPanel = createRemoveUserPanel();
+        } else if(e.getActionCommand().equals("Show User List")){// Show User List
+            newPanel = createShowUserListPanel();
         }
 
         this.remove(panel);
@@ -344,19 +355,19 @@ public class Main extends JFrame implements ActionListener {
         addBookButton.setBounds(200,170,200,50);
         addBookButton.addActionListener(this);
 
-        JButton removeBookButton = new JButton("Add User");
+        JButton removeBookButton = new JButton("Remove Book");
         removeBookButton.setBounds(200,240,200,50);
         removeBookButton.addActionListener(this);
 
-        JButton removeUserButton = new JButton("Remove User");
+        JButton removeUserButton = new JButton("Add User");
         removeUserButton.setBounds(200,310,200,50);
         removeUserButton.addActionListener(this);
 
-        JButton checkRequestButton = new JButton("Check Book Request");
+        JButton checkRequestButton = new JButton("Remove User");
         checkRequestButton.setBounds(200,380,200,50);
         checkRequestButton.addActionListener(this);
 
-        JButton checkUserCheckOutButton = new JButton("Check User Checkout List");
+        JButton checkUserCheckOutButton = new JButton("Show User List");
         checkUserCheckOutButton.setBounds(200,450,200,50);
         checkUserCheckOutButton.addActionListener(this);
 
@@ -625,6 +636,244 @@ public class Main extends JFrame implements ActionListener {
         signupPanel.add(passwordField);
         signupPanel.add(signUpButton);
         return signupPanel;
+    }
+    private JPanel createAddBookPanel(){
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = createUpperBorderDisplay(rectangle, new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Add Book");
+        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+
+        JLabel bookNameLabel = new JLabel("Enter Book Name:");
+        bookNameLabel.setBounds(210, 145, 150, 30);
+
+        JTextField bookNameField = new JTextField();
+        bookNameField.setBounds(205, 175, 200, 30);
+
+        JLabel bookAuthorLabel = new JLabel("Enter Author:");
+        bookAuthorLabel.setBounds(210, 205, 150, 30);
+
+        JTextField bookAuthorField = new JTextField();
+        bookAuthorField.setBounds(205, 235, 200, 30);
+
+        JLabel bookGenreLabel = new JLabel("Enter Genre:");
+        bookGenreLabel.setBounds(210,265,150,30);
+
+        JTextField bookGenreField = new JTextField();
+        bookGenreField.setBounds(205,295,200,30);
+
+        JLabel bookYearLabel = new JLabel("Enter Year:");
+        bookYearLabel.setBounds(210,325,150,30);
+
+        JTextField bookYearField = new JTextField();
+        bookYearField.setBounds(205,355,200,30);
+
+        JButton addBookButton = new JButton("Add Book");
+        addBookButton.setBounds(220, 400, 90, 45);
+        addBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int count = 0;
+                String bookName = bookNameField.getText();
+                String bookAuthor = bookAuthorField.getText();
+                String bookGenre = bookGenreField.getText();
+                int bookYear = Integer.parseInt(bookYearField.getText());
+                for(Book book : library.getBooks()) {
+                    if(bookName == book.getName() && bookAuthor == book.getAuthor() && bookGenre == book.getGenre() && bookYear == book.getYear()) {
+                        count++;
+                    }
+                }
+                if(count == 0){
+                    library.addBook(bookName, bookAuthor, bookGenre, bookYear);
+                    JOptionPane.showMessageDialog(null,"Success add book to library system");
+                } else {
+                    JOptionPane.showMessageDialog(null,"Book already in library system");
+                }
+            }
+        });
+
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
+        panel.add(bookNameLabel);
+        panel.add(bookAuthorLabel);
+        panel.add(bookGenreLabel);
+        panel.add(bookYearLabel);
+        panel.add(bookNameField);
+        panel.add(bookAuthorField);
+        panel.add(bookGenreField);
+        panel.add(bookYearField);
+        panel.add(addBookButton);
+
+        return panel;
+    }
+
+    private JPanel createRemoveBookPanel(){
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = createUpperBorderDisplay(rectangle, new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Remove Book");
+        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+        JLabel bookNameLabel = new JLabel("Enter Book Name:");
+        bookNameLabel.setBounds(210, 145, 150, 30);
+
+        JTextField bookNameField = new JTextField();
+        bookNameField.setBounds(205, 175, 200, 30);
+
+        JLabel bookAuthorLabel = new JLabel("Enter Author:");
+        bookAuthorLabel.setBounds(210, 205, 150, 30);
+
+        JTextField bookAuthorField = new JTextField();
+        bookAuthorField.setBounds(205, 235, 200, 30);
+
+        JLabel bookGenreLabel = new JLabel("Enter Genre:");
+        bookGenreLabel.setBounds(210,265,150,30);
+
+        JTextField bookGenreField = new JTextField();
+        bookGenreField.setBounds(205,295,200,30);
+
+        JLabel bookYearLabel = new JLabel("Enter Year:");
+        bookYearLabel.setBounds(210,325,150,30);
+
+        JTextField bookYearField = new JTextField();
+        bookYearField.setBounds(205,355,200,30);
+
+        JButton addBookButton = new JButton("Remove Book");
+        addBookButton.setBounds(220, 400, 90, 45);
+        addBookButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int count = 0;
+                String bookName = bookNameField.getText();
+                String bookAuthor = bookAuthorField.getText();
+                String bookGenre = bookGenreField.getText();
+                int bookYear = Integer.parseInt(bookYearField.getText());
+                for(Book book : library.getBooks()) {
+                    if(bookName == book.getName() && bookAuthor == book.getAuthor() && bookGenre == book.getGenre() && bookYear == book.getYear()) {
+                        count++;
+                        library.removeBook(new Book(bookName,bookAuthor,bookGenre,bookYear));
+                        JOptionPane.showMessageDialog(null,"Success remove book from library system");
+                    }
+                }
+                if(count == 0){
+                    JOptionPane.showMessageDialog(null,"Book not in library system");
+                }
+
+            }
+        });
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
+        panel.add(bookNameLabel);
+        panel.add(bookAuthorLabel);
+        panel.add(bookGenreLabel);
+        panel.add(bookYearLabel);
+        panel.add(bookNameField);
+        panel.add(bookAuthorField);
+        panel.add(bookGenreField);
+        panel.add(bookYearField);
+        panel.add(addBookButton);
+
+        return panel;
+    }
+
+    private JPanel createAddUserPanel(){
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = createUpperBorderDisplay(rectangle, new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Add User");
+        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
+
+        return panel;
+    }
+
+    private JPanel createRemoveUserPanel(){
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = createUpperBorderDisplay(rectangle, new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Remove User");
+        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
+
+        return panel;
+    }
+
+    private JPanel createShowUserListPanel(){
+        inUserLoginPanel = false;
+        Rectangle rectangle = new Rectangle(0, 0, 600, 80);
+
+        JPanel panel = createUpperBorderDisplay(rectangle, new Color(197, 160, 242));
+        panel.setLayout(null);
+
+        JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
+
+        JLabel nameLabel = new JLabel("Show User List");
+        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(Color.white);
+
+        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton.setBounds(475, 15, 100, 50);
+        optionsButton.addActionListener(this);
+
+        panel.add(applicationLabel);
+        panel.add(nameLabel);
+        panel.add(optionsButton);
+
+        return panel;
     }
 
     private void showUserProfile(User user) {
