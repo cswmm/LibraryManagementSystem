@@ -224,6 +224,90 @@ public class Main extends JFrame implements ActionListener {
                 popupMenu2.show(searchField, 0, searchField.getHeight());
 
             }
+            if (searchButton.getText().equals("Search by Name")){
+                for (int i = 0; i < library.books.size(); i++){
+                    if (library.books.get(i).getName().equals(searchField.getText())){
+                        System.out.println("Added to result list");
+                        results.add(library.books.get(i));
+                    }
+                }
+
+                popupMenu2 = new JPopupMenu();
+
+                for (int i = 0; i < results.size(); i++){
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    int finalI = i;
+                    menuItemOne.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //add check out button to J Option pane that adds to users check out list
+                            showBookInfo(results.get(finalI));
+                        }
+                    });
+                    popupMenu2.add(menuItemOne);
+                }
+                System.out.println(results.size());
+
+                popupMenu2.show(searchField, 0, searchField.getHeight());
+
+            }
+            if (searchButton.getText().equals("Search by Author")){
+                for (int i = 0; i < library.books.size(); i++){
+                    if (library.books.get(i).getAuthor().equals(searchField.getText())){
+                        System.out.println("Added to result list");
+                        results.add(library.books.get(i));
+                    }
+                }
+
+                popupMenu2 = new JPopupMenu();
+
+                for (int i = 0; i < results.size(); i++){
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    int finalI = i;
+                    menuItemOne.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //add check out button to J Option pane that adds to users check out list
+                            showBookInfo(results.get(finalI));
+                        }
+                    });
+                    popupMenu2.add(menuItemOne);
+                }
+                System.out.println(results.size());
+
+                popupMenu2.show(searchField, 0, searchField.getHeight());
+
+            }
+            if (searchButton.getText().equals("Search by Year")){
+                for (int i = 0; i < library.books.size(); i++){
+                    if (String.valueOf(library.books.get(i).getYear()).equals(searchField.getText())){
+                        System.out.println("Added to result list");
+                        results.add(library.books.get(i));
+                    }
+                }
+
+                popupMenu2 = new JPopupMenu();
+
+                for (int i = 0; i < results.size(); i++){
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    int finalI = i;
+                    menuItemOne.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //add check out button to J Option pane that adds to users check out list
+                            showBookInfo(results.get(finalI));
+                        }
+                    });
+                    popupMenu2.add(menuItemOne);
+                }
+                System.out.println(results.size());
+
+                popupMenu2.show(searchField, 0, searchField.getHeight());
+
+            }
 
         }
 
@@ -339,12 +423,12 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.addActionListener(this);
 
         searchField = new JTextField(20);
-        searchField.setBounds(150, 200, 300, 60);
+        searchField.setBounds(215, 200, 265, 60);
         searchButton = new JButton("Search");
-        searchButton.setBounds(50, 200, 100, 60);
+        searchButton.setBounds(100, 200, 120, 60);
         searchButton.addActionListener(this);
         goButton = new JButton("Go");
-        goButton.setBounds(450, 200, 100, 60);
+        goButton.setBounds(475, 200, 60, 60);
         goButton.addActionListener(this);
 
 
