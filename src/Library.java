@@ -191,7 +191,7 @@ public class Library {
     public void initializeUsers(){
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt"));
+                    new FileReader("LibraryManagement\\FileIO\\users.txt"));
             String str;
             while ((str = br.readLine()) != null){
                 String[] parts = str.split(",");
@@ -206,7 +206,7 @@ public class Library {
     public void initializeBooks(){
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt"));
+                    new FileReader("LibraryManagement\\FileIO\\books.txt"));
             String str;
             while ((str = br.readLine()) != null){
                 String[] parts = str.split(",");
