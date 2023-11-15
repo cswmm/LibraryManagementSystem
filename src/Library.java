@@ -27,7 +27,7 @@ public class Library {
     public void addBook(String name, String author, String genre, int year){
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt", true));
+                    "LibraryManagement\\FileIO\\books.txt", true));
             bw.write(name + "," + author + "," + genre + "," + year + "\n");
             books.add(new Book(name, author, genre, year));
             bw.close();
@@ -39,12 +39,12 @@ public class Library {
     public void removeBook(Book book){
         if (books.remove(book)){
             try {
-                File newFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books-temp.txt");
-                File oldFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt");
+                File newFile = new File("LibraryManagement\\FileIO\\books-temp.txt");
+                File oldFile = new File("LibraryManagement\\FileIO\\books.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books-temp.txt", true));
+                        "LibraryManagement\\FileIO\\books-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt"));
+                        new FileReader("LibraryManagement\\FileIO\\books.txt"));
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
@@ -56,7 +56,7 @@ public class Library {
                 br.close();
                 bw.close();
                 oldFile.delete();
-                File dump = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt");
+                File dump = new File("LibraryManagement\\FileIO\\books.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 return;
@@ -69,7 +69,7 @@ public class Library {
         // file io- adding a user's username and password to the database (users txt file)
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt", true));
+                    "LibraryManagement\\FileIO\\users.txt", true));
             bw.write(username + "," + String.valueOf(password) + "\n");
             users.add(new User(username, password, security1, security2));
             bw.close();
@@ -81,12 +81,12 @@ public class Library {
     public void removeUser(User user){
         if (users.remove(user)){
             try {
-                File newFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users-temp.txt");
-                File oldFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt");
+                File newFile = new File("LibraryManagement\\FileIO\\users-temp.txt");
+                File oldFile = new File("LibraryManagement\\FileIO\\users.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users-temp.txt", true));
+                        "LibraryManagement\\FileIO\\users-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt"));
+                        new FileReader("LibraryManagement\\FileIO\\users.txt"));
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
@@ -97,7 +97,7 @@ public class Library {
                 br.close();
                 bw.close();
                 oldFile.delete();
-                File dump = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt");
+                File dump = new File("LibraryManagement\\FileIO\\users.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 return;
