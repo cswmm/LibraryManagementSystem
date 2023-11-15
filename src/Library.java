@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,11 +22,87 @@ public class Library {
         u = payToWin;
     }
 
+
+    // method to add a book to system
+    public void addBook(String name, String author, String genre, int year){
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(
+                    "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt", true));
+            bw.write(name + "," + author + "," + genre + "," + year + "\n");
+            books.add(new Book(name, author, genre, year));
+            bw.close();
+        } catch (Exception e) {
+            return;
+        }
+    }
+
+    public void removeBook(Book book){
+        if (books.remove(book)){
+            try {
+                File newFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books-temp.txt");
+                File oldFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt");
+                BufferedWriter bw = new BufferedWriter(new FileWriter(
+                        "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books-temp.txt", true));
+                BufferedReader br = new BufferedReader(
+                        new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt"));
+                String str;
+                while ((str = br.readLine()) != null){
+                    String[] parts = str.split(",");
+                    if (parts[0] != book.getName() && parts[1] != book.getAuthor() && parts[2] != book.getGenre()
+                    && Integer.parseInt(parts[3]) != book.getYear()){
+                        bw.write(str + "\n");
+                    }
+                }
+                br.close();
+                bw.close();
+                oldFile.delete();
+                File dump = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt");
+                newFile.renameTo(dump);
+            } catch (Exception e){
+                return;
+            }
+        }
+    }
     // method to add a user to the system
     // called after a user enters their information in signup page
     public void addUser(String username, char[] password, String security1, String security2) throws PasswordException {
-        User u = new User(username, password, security1, security2);
-        users.add(u);
+        // file io- adding a user's username and password to the database (users txt file)
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(
+                    "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt", true));
+            bw.write(username + "," + String.valueOf(password) + "\n");
+            users.add(new User(username, password, security1, security2));
+            bw.close();
+        } catch (Exception e) {
+            return;
+        }
+    }
+
+    public void removeUser(User user){
+        if (users.remove(user)){
+            try {
+                File newFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users-temp.txt");
+                File oldFile = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt");
+                BufferedWriter bw = new BufferedWriter(new FileWriter(
+                        "C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users-temp.txt", true));
+                BufferedReader br = new BufferedReader(
+                        new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt"));
+                String str;
+                while ((str = br.readLine()) != null){
+                    String[] parts = str.split(",");
+                    if (parts[0] != user.getUsername() && parts[1].toCharArray() != user.getPassword()){
+                        bw.write(str + "\n");
+                    }
+                }
+                br.close();
+                bw.close();
+                oldFile.delete();
+                File dump = new File("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt");
+                newFile.renameTo(dump);
+            } catch (Exception e){
+                return;
+            }
+        }
     }
 
     public User getUser(String username, char[] password){
@@ -111,4 +188,33 @@ public class Library {
         return librarians;
     } // Return librarians list
 
+    public void initializeUsers(){
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\users.txt"));
+            String str;
+            while ((str = br.readLine()) != null){
+                String[] parts = str.split(",");
+                users.add(new User(parts[0], parts[1].toCharArray(), null, null));
+            }
+            br.close();
+        } catch (Exception e){
+            return;
+        }
+    }
+
+    public void initializeBooks(){
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("C:\\Users\\natha\\IdeaProjects\\Cs151\\LibraryManagement\\FileIO\\books.txt"));
+            String str;
+            while ((str = br.readLine()) != null){
+                String[] parts = str.split(",");
+                books.add(new Book(parts[0], parts[1], parts[2], Integer.parseInt(parts[3])));
+            }
+            br.close();
+        } catch (Exception e){
+            return;
+        }
+    }
 }
