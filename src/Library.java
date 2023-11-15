@@ -27,7 +27,7 @@ public class Library {
     public void addBook(String name, String author, String genre, int year){
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "LibraryManagement\\FileIO\\books.txt", true));
+                    "src/books.txt", true));
             bw.write(name + "," + author + "," + genre + "," + year + "\n");
             books.add(new Book(name, author, genre, year));
             bw.close();
@@ -39,12 +39,12 @@ public class Library {
     public void removeBook(Book book){
         if (books.remove(book)){
             try {
-                File newFile = new File("LibraryManagement\\FileIO\\books-temp.txt");
-                File oldFile = new File("LibraryManagement\\FileIO\\books.txt");
+                File newFile = new File("src/books-temp.txt");
+                File oldFile = new File("src/books.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "LibraryManagement\\FileIO\\books-temp.txt", true));
+                        "src/books-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("LibraryManagement\\FileIO\\books.txt"));
+                        new FileReader("src/books.txt"));
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
@@ -56,7 +56,7 @@ public class Library {
                 br.close();
                 bw.close();
                 oldFile.delete();
-                File dump = new File("LibraryManagement\\FileIO\\books.txt");
+                File dump = new File("src/books.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 return;
@@ -69,7 +69,7 @@ public class Library {
         // file io- adding a user's username and password to the database (users txt file)
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "LibraryManagement\\FileIO\\users.txt", true));
+                    "src/users.txt", true));
             bw.write(username + "," + String.valueOf(password) + "\n");
             users.add(new User(username, password, security1, security2));
             bw.close();
@@ -81,12 +81,12 @@ public class Library {
     public void removeUser(User user){
         if (users.remove(user)){
             try {
-                File newFile = new File("LibraryManagement\\FileIO\\users-temp.txt");
-                File oldFile = new File("LibraryManagement\\FileIO\\users.txt");
+                File newFile = new File("src/users-temp.txt");
+                File oldFile = new File("src/users.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "LibraryManagement\\FileIO\\users-temp.txt", true));
+                        "src/users-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("LibraryManagement\\FileIO\\users.txt"));
+                        new FileReader("src/users.txt"));
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
@@ -97,7 +97,7 @@ public class Library {
                 br.close();
                 bw.close();
                 oldFile.delete();
-                File dump = new File("LibraryManagement\\FileIO\\users.txt");
+                File dump = new File("src/users.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 return;
@@ -191,7 +191,7 @@ public class Library {
     public void initializeUsers(){
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("LibraryManagement\\FileIO\\users.txt"));
+                    new FileReader("src/users.txt"));
             String str;
             while ((str = br.readLine()) != null){
                 String[] parts = str.split(",");
@@ -206,7 +206,7 @@ public class Library {
     public void initializeBooks(){
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("LibraryManagement\\FileIO\\books.txt"));
+                    new FileReader("src/books.txt"));
             String str;
             while ((str = br.readLine()) != null){
                 String[] parts = str.split(",");
