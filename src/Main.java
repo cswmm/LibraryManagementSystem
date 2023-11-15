@@ -41,10 +41,10 @@ public class Main extends JFrame implements ActionListener {
     public Main() {
         library.initializeUsers();
         library.initializeBooks();
+        System.out.println(library.users);
+        System.out.println(library.books);
         Librarian admin = new Librarian("Mr. Librarian", "admin".toCharArray(), "", "");
         User quick = new User("D", "davis123!".toCharArray(), "", "");
-        library.addBook("Hello","World", "comedy", 2001);
-        library.addBook("Bye", "Universe", "comedy", 2001);
         //library.users.add(quick);
         library.librarians.add(admin);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
