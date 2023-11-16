@@ -1010,7 +1010,7 @@ public class Main extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int count = 0;
-               for(User user: library.getUsers()){
+                for(User user: library.getUsers()){
                    if(user.getUsername().equals(usernameLField.getText())){
                        System.out.println("true");
                        count++;
