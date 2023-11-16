@@ -145,7 +145,7 @@ public class Main extends JFrame implements ActionListener {
             popupMenu.show(optionsButton, 0, optionsButton.getHeight());
 
         }
-        else if (e.getActionCommand().equals("View Books")){
+        else if (e.getActionCommand().equals("View Checked Out Books")){
             JPopupMenu userBooksMenu = new JPopupMenu();
             User user = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
 
@@ -381,8 +381,8 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
-        JLabel nameLabel = new JLabel("Librarian " + enterLibrarianUsernameField.getText());
-        nameLabel.setBounds(200, 100, 400, 60);
+        JLabel nameLabel = new JLabel("Admin: " + enterLibrarianUsernameField.getText());
+        nameLabel.setBounds(50, 75, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
@@ -485,7 +485,7 @@ public class Main extends JFrame implements ActionListener {
         goButton.setBounds(485, 100, 60, 45);
         goButton.addActionListener(this);
 
-        viewBooksButton = new JButton("View Books");
+        viewBooksButton = new JButton("View Checked Out Books");
         viewBooksButton.setBounds(225, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
@@ -558,7 +558,7 @@ public class Main extends JFrame implements ActionListener {
         goButton.setBounds(485, 100, 60, 45);
         goButton.addActionListener(this);
 
-        viewBooksButton = new JButton("View Books");
+        viewBooksButton = new JButton("View Checked Out Books");
         viewBooksButton.setBounds(225, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
@@ -577,7 +577,7 @@ public class Main extends JFrame implements ActionListener {
                 g2d.fill(circle);
 
                 g2d.setColor(Color.BLACK);
-                String text = "Hello premium " + enterUsernameField.getText();
+                String text = "Hello Premium " + enterUsernameField.getText();
                 FontMetrics fontMetrics = g2d.getFontMetrics();
 
                 // Calculate the maximum font size to fit the text within the circle
@@ -782,7 +782,7 @@ public class Main extends JFrame implements ActionListener {
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
         JLabel nameLabel = new JLabel("Add Book");
-        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setBounds(40, 75, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
@@ -791,31 +791,31 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.addActionListener(this);
 
         JLabel bookNameLabel = new JLabel("Enter Book Name:");
-        bookNameLabel.setBounds(210, 145, 150, 30);
+        bookNameLabel.setBounds(100, 145, 150, 30);
 
         JTextField bookNameField = new JTextField();
-        bookNameField.setBounds(205, 175, 200, 30);
+        bookNameField.setBounds(95, 175, 200, 30);
 
         JLabel bookAuthorLabel = new JLabel("Enter Author:");
-        bookAuthorLabel.setBounds(210, 205, 150, 30);
+        bookAuthorLabel.setBounds(315, 145, 150, 30);
 
         JTextField bookAuthorField = new JTextField();
-        bookAuthorField.setBounds(205, 235, 200, 30);
+        bookAuthorField.setBounds(305, 175, 200, 30);
 
         JLabel bookGenreLabel = new JLabel("Enter Genre:");
-        bookGenreLabel.setBounds(210,265,150,30);
+        bookGenreLabel.setBounds(100,205,150,30);
 
         JTextField bookGenreField = new JTextField();
-        bookGenreField.setBounds(205,295,200,30);
+        bookGenreField.setBounds(95,235,200,30);
 
         JLabel bookYearLabel = new JLabel("Enter Year:");
-        bookYearLabel.setBounds(210,325,150,30);
+        bookYearLabel.setBounds(315,205,150,30);
 
         JTextField bookYearField = new JTextField();
-        bookYearField.setBounds(205,355,200,30);
+        bookYearField.setBounds(305,235,200,30);
 
         JButton addBookButton = new JButton("Add Book");
-        addBookButton.setBounds(220, 400, 90, 45);
+        addBookButton.setBounds(240, 300, 90, 45);
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -865,39 +865,40 @@ public class Main extends JFrame implements ActionListener {
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
         JLabel nameLabel = new JLabel("Remove Book");
-        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setBounds(40, 75, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
         optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
+
         JLabel bookNameLabel = new JLabel("Enter Book Name:");
-        bookNameLabel.setBounds(210, 145, 150, 30);
+        bookNameLabel.setBounds(100, 145, 150, 30);
 
         JTextField bookNameField = new JTextField();
-        bookNameField.setBounds(205, 175, 200, 30);
+        bookNameField.setBounds(95, 175, 200, 30);
 
         JLabel bookAuthorLabel = new JLabel("Enter Author:");
-        bookAuthorLabel.setBounds(210, 205, 150, 30);
+        bookAuthorLabel.setBounds(315, 145, 150, 30);
 
         JTextField bookAuthorField = new JTextField();
-        bookAuthorField.setBounds(205, 235, 200, 30);
+        bookAuthorField.setBounds(305, 175, 200, 30);
 
         JLabel bookGenreLabel = new JLabel("Enter Genre:");
-        bookGenreLabel.setBounds(210,265,150,30);
+        bookGenreLabel.setBounds(100,205,150,30);
 
         JTextField bookGenreField = new JTextField();
-        bookGenreField.setBounds(205,295,200,30);
+        bookGenreField.setBounds(95,235,200,30);
 
         JLabel bookYearLabel = new JLabel("Enter Year:");
-        bookYearLabel.setBounds(210,325,150,30);
+        bookYearLabel.setBounds(315,205,150,30);
 
         JTextField bookYearField = new JTextField();
-        bookYearField.setBounds(205,355,200,30);
+        bookYearField.setBounds(305,235,200,30);
 
         JButton addBookButton = new JButton("Remove Book");
-        addBookButton.setBounds(220, 400, 90, 45);
+        addBookButton.setBounds(240, 300, 100, 45);
         addBookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -988,7 +989,7 @@ public class Main extends JFrame implements ActionListener {
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
         JLabel nameLabel = new JLabel("Remove User");
-        nameLabel.setBounds(250, 100, 400, 60);
+        nameLabel.setBounds(40, 75, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
@@ -1003,7 +1004,7 @@ public class Main extends JFrame implements ActionListener {
         usernameLField.setBounds(205, 175, 200, 30);
 
         JButton removeUserButton = new JButton("Remove User");
-        removeUserButton.setBounds(220, 400, 90, 45);
+        removeUserButton.setBounds(240, 220, 110, 45);
         removeUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
