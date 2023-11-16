@@ -13,7 +13,9 @@ public class Book {
     private String genre;
     private int year;
 
-    private Date dueDate = null; // book in library don't have due date
+    //private Date dueDate = null; // book in library don't have due date
+
+    private boolean checkedOut = false;
 
     public Book(){
     }
@@ -25,6 +27,15 @@ public class Book {
         this.year = year;
         //this.dueDate = dueDate;
     }
+
+    public boolean isCheckedOut() {
+        return checkedOut;
+    }
+
+    public void setCheckedOut(boolean checkedOut) {
+        this.checkedOut = checkedOut;
+    }
+
     public String getName(){
         return this.name;
     }
@@ -39,9 +50,9 @@ public class Book {
         return this.genre;
     }
 
-    public Date getDueDate(){
-        return this.dueDate;
-    }
+    //public Date getDueDate(){
+     //   return this.dueDate;
+    //}
 
     //public LinkedList<genre> getGenreList(){ return genreList; }
 
@@ -61,9 +72,9 @@ public class Book {
         this.year = year;
     }
 
-    public void setDueDate(Date dueDate) {
+    /*public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
+    }*/
 
     @Override
     public String toString() {
