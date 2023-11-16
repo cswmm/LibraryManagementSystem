@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.geom.Ellipse2D;
+import java.util.LinkedList;
 
 public class Main extends JFrame implements ActionListener {
     private JPanel panel;
@@ -354,7 +355,7 @@ public class Main extends JFrame implements ActionListener {
         } else if(e.getActionCommand().equals("Remove Book")){ // Librarian-Remove Book
             newPanel = createRemoveBookPanel();
         } else if(e.getActionCommand().equals("Show Book List")){// Show Book List
-            newPanel = createAddUserPanel();
+            newPanel = createShowBookListPanel();
         } else if(e.getActionCommand().equals("Remove User")){// Remove User
             newPanel = createRemoveUserPanel();
         } else if(e.getActionCommand().equals("Show User List")){// Show User List
@@ -935,7 +936,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
-    private JPanel createAddUserPanel(){
+    private JPanel createShowBookListPanel(){
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
 
@@ -944,7 +945,7 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
-        JLabel nameLabel = new JLabel("Add User");
+        JLabel nameLabel = new JLabel("Show Book List");
         nameLabel.setBounds(250, 100, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
@@ -953,63 +954,26 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
-        JLabel usernameLLabel = new JLabel("Enter Username:");
-        usernameLLabel.setBounds(210, 145, 150, 30);
+        LinkedList<Book> booklist = new LinkedList<>();
 
-        JTextField usernameLField = new JTextField();
-        usernameLField.setBounds(205, 175, 200, 30);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(int i = 0; i < library.getBooks().size(); i++){
+            booklist.add(library.getBooks().get(i));
+        }
+        for (Book book : booklist) {
+            listModel.addElement(book.getName()+ " "+book.getAuthor()+ " "+book.getGenre()+ " "+ book.getYear());
+        }
+        JList<String> jList = new JList<>(listModel);
 
-        JLabel passwordLLabel = new JLabel("Enter Password:");
-        passwordLLabel.setBounds(210, 205, 150, 30);
-
-        JPasswordField passwordLField = new JPasswordField();
-        passwordLField.setBounds(205, 235, 200, 30);
-
-        JLabel security1LLabel = new JLabel("Enter security 1: What is your mother's maiden name?");
-        security1LLabel.setBounds(210,265,300,30);
-
-        JTextField security1LField = new JTextField();
-        security1LField.setBounds(205,295,200,30);
-
-        JLabel security2LLabel = new JLabel("Enter security 2: What is the name of your first pet?");
-        security2LLabel.setBounds(210,325,300,30);
-
-        JTextField security2LField = new JTextField();
-        security2LField.setBounds(205,355,200,30);
-
-        JButton addUserButton = new JButton("Add User");
-        addUserButton.setBounds(220, 400, 90, 45);
-        addUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    if(library.containsUserName(usernameLField.getText())){
-                        JOptionPane.showMessageDialog(null, "Username existed, please choose another username");
-                    }
-                    library.passwordRequirement(passwordLField.getPassword());
-                    //creates and adds user to library
-                    library.addUser(usernameLField.getText(), enterPasswordField.getPassword(),security1LField.getText(), security2LField.getText());
-                    JOptionPane.showMessageDialog(null, "User account added");
-
-                } catch (PasswordException ex) {
-                    JOptionPane.showMessageDialog(null, "Password error: " + ex.getMessage());
-                }
-            }
-        });
+        // Add the JList to a JScrollPane to allow for scrolling
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(100,100,400,400);
 
 
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
-        panel.add(usernameLLabel);
-        panel.add(usernameLField);
-        panel.add(passwordLLabel);
-        panel.add(passwordLField);
-        panel.add(security1LLabel);
-        panel.add(security1LField);
-        panel.add(security2LLabel);
-        panel.add(security2LField);
-        panel.add(addUserButton);
+        panel.add(scrollPane);
 
         return panel;
     }
