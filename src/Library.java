@@ -1,3 +1,5 @@
+import jdk.jfr.StackTrace;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,7 +92,7 @@ public class Library {
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
-                    if (parts[0].equals(user.getUsername()) && Arrays.equals(parts[1].toCharArray(), user.getPassword())){
+                    if (!parts[0].equals(user.getUsername()) && !parts[1].equals(user.getPassword())){
                         bw.write(str + "\n");
                     }
                 }
@@ -100,7 +102,7 @@ public class Library {
                 File dump = new File("src/users.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
-                return;
+                e.printStackTrace();
             }
         }
     }
