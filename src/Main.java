@@ -353,7 +353,7 @@ public class Main extends JFrame implements ActionListener {
             newPanel = createAddBookPanel();
         } else if(e.getActionCommand().equals("Remove Book")){ // Librarian-Remove Book
             newPanel = createRemoveBookPanel();
-        } else if(e.getActionCommand().equals("Add User")){// Librarian Add User
+        } else if(e.getActionCommand().equals("Show Book List")){// Show Book List
             newPanel = createAddUserPanel();
         } else if(e.getActionCommand().equals("Remove User")){// Remove User
             newPanel = createRemoveUserPanel();
@@ -398,7 +398,7 @@ public class Main extends JFrame implements ActionListener {
         removeBookButton.setBounds(220,170,125,50);
         removeBookButton.addActionListener(this);
 
-        JButton removeUserButton = new JButton("Add User");
+        JButton removeUserButton = new JButton("Show Book List");
         removeUserButton.setBounds(360,170,125,50);
         removeUserButton.addActionListener(this);
 
