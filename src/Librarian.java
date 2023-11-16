@@ -82,4 +82,8 @@ public class Librarian extends User{
         }
     }*/
 
+    @Override
+    public String toString() {
+        return "Librarian username: " + this.getUsername() + "; Librarian password: " + String.valueOf(this.getPassword());
+    }
 }

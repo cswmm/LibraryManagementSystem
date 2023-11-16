@@ -16,11 +16,7 @@ public class Main extends JFrame implements ActionListener {
     JPasswordField enterPasswordField;
     JTextField enterLibrarianUsernameField;
     JPasswordField enterLibrarianPasswordField;
-
     private JButton optionsButton;
-    private String password;
-    private String userName;
-
     JButton searchButton;
     JButton goButton;
 
@@ -44,7 +40,7 @@ public class Main extends JFrame implements ActionListener {
         library.initializeBooks();
         System.out.println(library.users);
         System.out.println(library.books);
-        Librarian admin = new Librarian("Mr. Librarian", "admin".toCharArray(), "", "");
+        Librarian admin = new Librarian("Librarian", "admin".toCharArray(), "", "");
         library.librarians.add(admin);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
@@ -79,8 +75,6 @@ public class Main extends JFrame implements ActionListener {
                 library.passwordRequirement(passwordField.getPassword());
                 //creates and adds user to library
                 library.addUser(usernameField.getText(), passwordField.getPassword(), "", "");
-                password = String.valueOf(passwordField.getPassword());
-                userName = usernameField.getText();
                 JOptionPane.showMessageDialog(null, "Sign In Successful!");
 
             } catch (PasswordException ex) {
@@ -93,7 +87,7 @@ public class Main extends JFrame implements ActionListener {
             System.out.println(enterPasswordField.getPassword());
             //creates new unique user panel
             if (library.containsUserName(enterUsernameField.getText()) && library.containsPassword(enterPasswordField.getPassword())){
-                User u = library.getUser(userName, password.toCharArray());
+                User u = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
                 if (u.hasPremium()){
                     newPanel = createPremiumUserPagePanel();
                 } else {
@@ -105,13 +99,13 @@ public class Main extends JFrame implements ActionListener {
             }
 
         } else if (e.getActionCommand().equals("Log-In [A]")) {
-            if (enterLibrarianUsernameField.getText().equals("Mr. Librarian") && Arrays.equals(enterLibrarianPasswordField.getPassword(), "admin".toCharArray())){
+            if (enterLibrarianUsernameField.getText().equals("Librarian") && Arrays.equals(enterLibrarianPasswordField.getPassword(), "admin".toCharArray())){
                 newPanel = createLibrarianPanel();
             }
         }
         else if (e.getActionCommand().equals("Options")) {
             //creates drop menu when options menu is pressed in user panel
-            User u = library.getUser(userName, password.toCharArray());
+            User u = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
 
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem menuItem1 = new JMenuItem("Account Info");
@@ -135,14 +129,14 @@ public class Main extends JFrame implements ActionListener {
             newPanel = startScreenPanel();
         } else if (e.getActionCommand().equals("Account Info")){
             String enterPassword = JOptionPane.showInputDialog("Enter password to see account information");
-            if (enterPassword.equals(password)){
+            if (enterPassword.equals(String.valueOf(enterPasswordField.getPassword()))){
                 //displays username and password, add library card number
-                showUserProfile(library.getUser(userName, password.toCharArray()));
+                showUserProfile(library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
             }
         } else if (e.getActionCommand().equals("Buy Premium")) {
             String upgradeToPremium = JOptionPane.showInputDialog("Upgrade to premium for $5 a month. Enter your password");
-            if (upgradeToPremium.equals(password)){
-                library.getUser(userName, password.toCharArray()).setPremium(true);
+            if (upgradeToPremium.equals(String.valueOf(enterPasswordField.getPassword()))){
+                library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()).setPremium(true);
                 JOptionPane.showMessageDialog(null, "Welcome to the premium club. Sign in again to access your premium account");
             }
         } else if (e.getActionCommand().equals("Search")) {
@@ -215,7 +209,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
+                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -243,7 +237,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
+                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -271,7 +265,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
+                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -299,7 +293,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
+                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -424,7 +418,7 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
-        JLabel nameLabel = new JLabel("Welcome " + usernameField.getText() + "!");
+        JLabel nameLabel = new JLabel("Welcome " + enterUsernameField.getText() + "!");
         nameLabel.setBounds(250, 100, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
@@ -465,7 +459,7 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(206, 166, 105));
 
-        JLabel nameLabel = new JLabel("Premium User " + userName + "!");
+        JLabel nameLabel = new JLabel("Premium User " + enterUsernameField.getText() + "!");
         nameLabel.setBounds(250,100,400,60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
@@ -865,7 +859,7 @@ public class Main extends JFrame implements ActionListener {
                     }
                     library.passwordRequirement(passwordLField.getPassword());
                     //creates and adds user to library
-                    library.addUser(usernameLField.getText(), password.toCharArray(),security1LField.getText(), security2LField.getText());
+                    library.addUser(usernameLField.getText(), enterPasswordField.getPassword(),security1LField.getText(), security2LField.getText());
                     JOptionPane.showMessageDialog(null, "User account added");
 
                 } catch (PasswordException ex) {
@@ -976,8 +970,8 @@ public class Main extends JFrame implements ActionListener {
         String userName = user.getUsername();
         String password = String.valueOf(user.getPassword());
 
-        String profileMessage = "Name: " + name + "\n" + "Password: " + password;
-        JComboBox<String> bookComboBox = new JComboBox<>(user.getBooks().toArray(new String[0]));
+        String profileMessage = "Name: " + name + "\n" + "Password: " + password + "\n" + "Library Cart";
+        /*JComboBox<String> bookComboBox = new JComboBox<>(user.getBooks().toArray(new String[0]));
 
         // Create the remove button
         JButton removeButton = new JButton("Remove Book");
@@ -1004,7 +998,7 @@ public class Main extends JFrame implements ActionListener {
         panel.add(bookComboBox);
         panel.add(removeButton);
 
-
+        */
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
     }
 

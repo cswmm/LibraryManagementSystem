@@ -164,4 +164,10 @@ public class User extends Library {
         this.isPremium = isPremium;
     }
     //User cannot set their premium status
+
+
+    @Override
+    public String toString() {
+        return "Username: " + username + "; Password: " + String.valueOf(password);
+    }
 }
