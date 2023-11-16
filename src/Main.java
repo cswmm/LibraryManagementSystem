@@ -473,9 +473,22 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        searchField = new JTextField(20);
+        searchField.setBounds(215, 200, 265, 60);
+        searchButton = new JButton("Search");
+        searchButton.setBounds(100, 200, 120, 60);
+        searchButton.addActionListener(this);
+        goButton = new JButton("Go");
+        goButton.setBounds(475, 200, 60, 60);
+        goButton.addActionListener(this);
+
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
+        panel.add(searchField);
+        panel.add(searchButton);
+        panel.add(goButton);
 
         return panel;
     }
