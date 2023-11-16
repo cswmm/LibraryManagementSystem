@@ -25,6 +25,11 @@ public class Library {
 
     // method to add a book to system
     public void addBook(String name, String author, String genre, int year){
+        for (Book b: books){
+            if(b.getName().equals(name) && b.getAuthor().equals(author) && b.getGenre().equals(genre) && b.getYear() == year){
+                return;
+            }
+        }
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
                     "src/books.txt", true));
@@ -66,6 +71,12 @@ public class Library {
     // method to add a user to the system
     // called after a user enters their information in signup page
     public void addUser(String username, char[] password, String security1, String security2) throws PasswordException {
+        for (User u: users){
+            if(u.getUsername().equals(username) && u.getPassword().equals(password)){
+                return;
+            }
+        }
+
         // file io- adding a user's username and password to the database (users txt file)
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
