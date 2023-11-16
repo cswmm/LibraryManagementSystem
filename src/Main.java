@@ -214,7 +214,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI));
+                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -242,7 +242,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI));
+                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -270,7 +270,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI));
+                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -298,7 +298,7 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI));
+                            showBookInfo(results.get(finalI), library.getUser(userName, password.toCharArray()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -967,16 +967,16 @@ public class Main extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void showBookInfo(Book book) {
+    private void showBookInfo(Book book, User user) {
         String name = book.getName();
         String author = book.getAuthor();
         String genre = book.getGenre();
         String year = String.valueOf(book.getYear());
 
-        String bookMessage = " Title: " + name + "\n" + "Author: " + author + "\n" + "Genre: " + genre + "\n" + "year: " + year;
+        String bookMessage = " Title: " + name + "\n" + "Author: " + author + "\n" + "Genre: " + genre + "\n" + "Year: " + year;
 
         // Create an array of options (buttons)
-        Object[] options = {"OK", "Check Out"};
+        Object[] options = {"Back", "Check Out"};
 
         // Display the JOptionPane with a custom option panel
         int choice = JOptionPane.showOptionDialog(
@@ -994,6 +994,8 @@ public class Main extends JFrame implements ActionListener {
         if (choice == 1) {
             // User clicked "Check Out"
             // Add your checkout logic here
+            user.getBooks().add(book);
+            System.out.println(user.getBooks());
             JOptionPane.showMessageDialog(this, "Book Checked Out!");
         }
     }

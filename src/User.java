@@ -25,6 +25,7 @@ public class User extends Library {
         this.password = password;
         this.security1 = security1;
         this.security2 = security2;
+        this.books = new ArrayList<>();
     }
 
     public void terminateAccount() {
