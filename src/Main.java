@@ -73,7 +73,13 @@ public class Main extends JFrame implements ActionListener {
             else {
                 newPanel = startScreenPanel();
             }
-        } else if (e.getActionCommand().equals("User")) {
+        }
+        else if (e.getActionCommand().equals("Back")) {
+                    newPanel = createLibrarianPanel();
+
+
+        }
+        else if (e.getActionCommand().equals("User")) {
             newPanel = createUserLoginPanel();
         } else if (e.getActionCommand().equals("Admin")) {
             newPanel = createAdminLoginPanel();
@@ -779,7 +785,7 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
@@ -862,7 +868,7 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
         JLabel bookNameLabel = new JLabel("Enter Book Name:");
@@ -943,7 +949,7 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
@@ -1022,7 +1028,7 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
@@ -1077,7 +1083,7 @@ public class Main extends JFrame implements ActionListener {
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
-        optionsButton = new JButton("Go Back"); // Go Back button
+        optionsButton = new JButton("Back"); // Go Back button
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
