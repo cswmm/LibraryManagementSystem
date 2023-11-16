@@ -25,6 +25,7 @@ public class Main extends JFrame implements ActionListener {
     JButton goButton;
 
     JTextField searchField;
+    private JComboBox<String> bookComboBox;
 
     private boolean searchByGenre = false;
 
@@ -976,6 +977,33 @@ public class Main extends JFrame implements ActionListener {
         String password = String.valueOf(user.getPassword());
 
         String profileMessage = "Name: " + name + "\n" + "Password: " + password;
+        JComboBox<String> bookComboBox = new JComboBox<>(user.getBooks().toArray(new String[0]));
+
+        // Create the remove button
+        JButton removeButton = new JButton("Remove Book");
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the selected book from the combo box
+                String selectedBook = (String) bookComboBox.getSelectedItem();
+
+                // Check if a book is selected
+                if (selectedBook != null) {
+                    // Remove the selected book from the ArrayList
+                    user.getBooks().remove(selectedBook);
+
+                    // Update the combo box with the updated book list
+                    bookComboBox.setModel(new DefaultComboBoxModel<>(user.getBooks().toArray(new String[0])));
+                }
+            }
+        });
+
+        // Create a panel to hold components
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Books:"));
+        panel.add(bookComboBox);
+        panel.add(removeButton);
+
 
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
     }
