@@ -81,16 +81,12 @@ public class Library {
     }
 
     public void removeUser(User user){
-        if (users.remove(user)){
-            try {
-                File newFile = new File("src/users-temp.txt");
-                File oldFile = new File("src/users.txt");
-                BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "src/users-temp.txt", true));
-                BufferedReader br = new BufferedReader(
-                        new FileReader("src/users.txt"));
+        if (users.remove(user)) {
+            try (BufferedReader br = new BufferedReader(new FileReader("src/users.txt"));
+                 BufferedWriter bw = new BufferedWriter(new FileWriter("src/users-temp.txt"))) {
+
                 String str;
-                while ((str = br.readLine()) != null){
+                while ((str = br.readLine()) != null) {
                     String[] parts = str.split(",");
                     if (!parts[0].equals(user.getUsername()) && !parts[1].equals(user.getPassword())){
                         bw.write(str + "\n");
@@ -104,6 +100,11 @@ public class Library {
             } catch (Exception e){
                 e.printStackTrace();
             }
+
+            // Delete the old file and rename the temporary file
+            File oldFile = new File("src/users.txt");
+            File newFile = new File("src/users-temp.txt");
+            newFile.renameTo(oldFile);
         }
     }
 
