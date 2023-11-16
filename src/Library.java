@@ -1,5 +1,3 @@
-import jdk.jfr.StackTrace;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,17 +86,13 @@ public class Library {
                 String str;
                 while ((str = br.readLine()) != null) {
                     String[] parts = str.split(",");
-                    if (!parts[0].equals(user.getUsername()) && !parts[1].equals(user.getPassword())){
+                    if (!parts[0].equals(user.getUsername())) {
                         bw.write(str + "\n");
                     }
                 }
-                br.close();
-                bw.close();
-                oldFile.delete();
-                File dump = new File("src/users.txt");
-                newFile.renameTo(dump);
-            } catch (Exception e){
-                e.printStackTrace();
+
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle the exception appropriately (log, throw, etc.)
             }
 
             // Delete the old file and rename the temporary file
