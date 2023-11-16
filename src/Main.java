@@ -1051,9 +1051,25 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        LinkedList<String> usernamelist = new LinkedList<>();
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(User user: library.users){
+            usernamelist.add(user.getUsername());
+        }
+        for (String string : usernamelist) {
+            listModel.addElement(string);
+        }
+        JList<String> jList = new JList<>(listModel);
+
+        // Add the JList to a JScrollPane to allow for scrolling
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(100,100,400,400);
+
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
+        panel.add(scrollPane);
 
         return panel;
     }
