@@ -6,7 +6,6 @@ Midnight Pursuit,Amanda Turner,action,2018
 Dystopian Chronicles,Michael Anderson,dystopia,2013
 Historical Tapestry,Sarah Brown,history,2005
 Laugh Out Loud,Chris Miller,comedy,2011
-Quantum Leap,Samantha White,science-fiction,2019
 Hearts Entwined,David Thompson,romance,2003
 The Communist Manifesto,Karl Marx,comedy,1848
 Mein Kampf,Adolf Hitler,comedy,1925

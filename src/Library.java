@@ -90,7 +90,7 @@ public class Library {
                 String str;
                 while ((str = br.readLine()) != null){
                     String[] parts = str.split(",");
-                    if (parts[0] != user.getUsername() && parts[1].toCharArray() != user.getPassword()){
+                    if (parts[0].equals(user.getUsername()) && Arrays.equals(parts[1].toCharArray(), user.getPassword())){
                         bw.write(str + "\n");
                     }
                 }
@@ -210,6 +210,10 @@ public class Library {
 
     public ArrayList<Librarian> getLibrarians(){
         return librarians;
+    } // Return librarians list
+
+    public ArrayList<User> getUsers(){
+        return users;
     } // Return librarians list
 
     public void initializeUsers(){
