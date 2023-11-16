@@ -168,10 +168,34 @@ public class Library {
         return false;
     }
 
+    public boolean containsLibrarianUserName(String username) {
+        if (librarians != null){
+            for (int i = 0; i < librarians.size(); i++){
+                if (librarians.get(i).getUsername().equals(username)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public boolean containsPassword(char[] password) {
         if (users != null){
             for (int i = 0; i < users.size(); i++){
                 if (Arrays.equals(users.get(i).getPassword(), password)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean containsLibrarianPassword(char[] password) {
+        if (librarians != null){
+            for (int i = 0; i < librarians.size(); i++){
+                if (Arrays.equals(librarians.get(i).getPassword(), password)){
                     return true;
                 }
             }
@@ -196,6 +220,21 @@ public class Library {
             while ((str = br.readLine()) != null){
                 String[] parts = str.split(",");
                 users.add(new User(parts[0], parts[1].toCharArray(), null, null));
+            }
+            br.close();
+        } catch (Exception e){
+            return;
+        }
+    }
+
+    public void initializeLibrarian(){
+        try {
+            BufferedReader br = new BufferedReader(
+                    new FileReader("src/librarian.txt"));
+            String str;
+            while ((str = br.readLine()) != null){
+                String[] parts = str.split(",");
+                librarians.add(new Librarian(parts[0], parts[1].toCharArray(), null, null));
             }
             br.close();
         } catch (Exception e){

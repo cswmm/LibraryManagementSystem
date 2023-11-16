@@ -15,7 +15,7 @@ public class Book {
 
     //private Date dueDate = null; // book in library don't have due date
 
-    private boolean checkOut = false;
+    private boolean checkedOut = false;
 
     public Book(){
     }
@@ -27,6 +27,15 @@ public class Book {
         this.year = year;
         //this.dueDate = dueDate;
     }
+
+    public boolean isCheckedOut() {
+        return checkedOut;
+    }
+
+    public void setCheckedOut(boolean checkedOut) {
+        this.checkedOut = checkedOut;
+    }
+
     public String getName(){
         return this.name;
     }
