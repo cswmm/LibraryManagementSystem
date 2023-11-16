@@ -45,7 +45,7 @@ public class Librarian extends User{
     public void removeUser(String username){
         int count = 0;
         for(User u : users) {
-            if (u.getUsername() == username) {
+            if (u.getUsername().equals(username)) {
                 count++;
                 users.remove(username);
             }

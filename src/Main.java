@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Main extends JFrame implements ActionListener {
     private JPanel panel;
@@ -908,9 +909,9 @@ public class Main extends JFrame implements ActionListener {
                 String bookGenre = bookGenreField.getText();
                 int bookYear = Integer.parseInt(bookYearField.getText());
                 for(Book book : library.getBooks()) {
-                    if(bookName == book.getName() && bookAuthor == book.getAuthor() && bookGenre == book.getGenre() && bookYear == book.getYear()) {
+                    if(bookName.equals(book.getName()) && Objects.equals(bookAuthor, book.getAuthor()) && Objects.equals(bookGenre, book.getGenre()) && bookYear == book.getYear()) {
                         count++;
-                        library.removeBook(new Book(bookName,bookAuthor,bookGenre,bookYear));
+                        library.removeBook(book);
                         JOptionPane.showMessageDialog(null,"Success remove book from library system");
                     }
                 }
@@ -1009,11 +1010,11 @@ public class Main extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int count = 0;
-               for(int i = 0; i < library.users.size(); i++){
-                   if(library.users.get(i).getUsername() == usernameLField.getText()){
+               for(User user: library.getUsers()){
+                   if(user.getUsername().equals(usernameLField.getText())){
+                       System.out.println("true");
                        count++;
-                       User user = library.users.get(i);
-                       library.users.remove(user);
+                       library.removeUser(user);
                    }
                }
                if(count == 0 ){
