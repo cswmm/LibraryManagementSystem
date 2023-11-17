@@ -828,14 +828,14 @@ public class Main extends JFrame implements ActionListener {
                 for(Book book : library.getBooks()) {
                     if(bookName == book.getName() && bookAuthor == book.getAuthor() && bookGenre == book.getGenre() && bookYear == book.getYear()) {
                         count--;
-                        JOptionPane.showMessageDialog(null,"Book already in library system");
-                    } else {
-                        count++;
+                        break;
                     }
                 }
-                if(count >= library.books.size() - 1){
+                if(count == 0){
                     library.addBook(bookName, bookAuthor, bookGenre, bookYear);
                     JOptionPane.showMessageDialog(null,"Success add book to library system");
+                } else {
+                    JOptionPane.showMessageDialog(null,"Book already in library system");
                 }
             }
         });
