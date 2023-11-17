@@ -826,8 +826,9 @@ public class Main extends JFrame implements ActionListener {
                 String bookGenre = bookGenreField.getText();
                 int bookYear = Integer.parseInt(bookYearField.getText());
                 for(Book book : library.getBooks()) {
-                    if(bookName == book.getName() && bookAuthor == book.getAuthor() && bookGenre == book.getGenre() && bookYear == book.getYear()) {
-                        count--;
+                    if(Objects.equals(bookName, book.getName()) && Objects.equals(bookAuthor, book.getAuthor()) && Objects.equals(bookGenre, book.getGenre()) && bookYear == book.getYear()) {
+                        count++;
+                        System.out.println(count);
                         break;
                     }
                 }
