@@ -1,5 +1,3 @@
-import jdk.jfr.StackTrace;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,6 +140,11 @@ public class Library {
             } catch (Exception e){
                 e.printStackTrace();
             }
+
+            // Delete the old file and rename the temporary file
+            File oldFile = new File("src/users.txt");
+            File newFile = new File("src/users-temp.txt");
+            newFile.renameTo(oldFile);
         }
     }
 
