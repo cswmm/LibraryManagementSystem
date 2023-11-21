@@ -6,8 +6,6 @@ import java.io.*;
 public class User extends Library {
     private String username;
     private char[] password;
-    private String security1;
-    private String security2;
     private boolean isPremium = false; // User initially not Premium User
 
     private LinkedList<String> securityAnswer;
@@ -20,11 +18,9 @@ public class User extends Library {
 
     public User(){
     }
-    public User(String username, char[] password, String security1, String security2) {
+    public User(String username, char[] password) {
         this.username = username;
         this.password = password;
-        this.security1 = security1;
-        this.security2 = security2;
         this.books = new ArrayList<>();
     }
 
@@ -44,10 +40,10 @@ public class User extends Library {
     public String forgetUsernamePassword(String username, String password, String security1, String security2){
         int count = 0;
         for(User u : users){
-            if(u.getUsername() == username && u.getSecurity1() == security1 && u.getSecurity2() == security2){
+            if(u.getUsername() == username){
                 count++;
                 return "Username: "+ u.getUsername() + " Password: "+ u.getPassword().toString();
-            } else if (u.getPassword().toString() == password && u.getSecurity1() == security1 && u.getSecurity2() == security2) {
+            } else if (u.getPassword().toString() == password) {
                 count++;
                 return "Username: "+ u.getUsername() + " Password: "+ u.getPassword().toString();
             }
@@ -124,8 +120,7 @@ public class User extends Library {
 
     //Click a button to get all information of the account
     public String getInformation(){
-        return "Username: " + getUsername() + "\nPassword:  " + getPassword() +
-                "\nSecurity answer 1: " + getSecurity1() + "\nSecurity answer 2: " + getSecurity2();
+        return "Username: " + getUsername() + "\nPassword:  " + getPassword();
     }
 
     public ArrayList<Book> getBooks() { // I believe getBooks() and checkCheckedOutBook() are the same
@@ -140,13 +135,6 @@ public class User extends Library {
         return this.password;
     }
 
-    public String getSecurity1(){
-        return this.security1;
-    }
-
-    public String getSecurity2(){
-        return this.security2;
-    }
 
     public void setUsername(String username) {
         this.username = username;

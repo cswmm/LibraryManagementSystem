@@ -8,8 +8,8 @@ public class Librarian extends User{
 
     public Librarian(){}
 
-    public Librarian(String username, char[] password, String security1, String security2){
-        super(username, password, security1, security2);
+    public Librarian(String username, char[] password){
+        super(username, password);
     }
 
     // Librarian enter book information to add book to library system
