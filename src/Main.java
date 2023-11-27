@@ -171,21 +171,22 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getActionCommand().equals("View Checked Out Books")){
             JPopupMenu userBooksMenu = new JPopupMenu();
-            //fix
-            User user = createTempUser();
 
-            for (int i = 0; i < user.getBooks().size(); i++){
-                JMenuItem menuItemOne = new JMenuItem(user.getBooks().get(i).toString());
-                menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
-                int finalI = i;
-                menuItemOne.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        //add check out button to J Option pane that adds to users check out list
-                        showReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
-                    }
-                });
-                userBooksMenu.add(menuItemOne);
+            User user = createTempUser();
+            if (user != null) {
+                for (int i = 0; i < user.getBooks().size(); i++){
+                    JMenuItem menuItemOne = new JMenuItem(user.getBooks().get(i).toString());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    int finalI = i;
+                    menuItemOne.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //add check out button to J Option pane that adds to users check out list
+                            showReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                        }
+                    });
+                    userBooksMenu.add(menuItemOne);
+                }
             }
 
             userBooksMenu.show(viewBooksButton, 0, viewBooksButton.getHeight());
