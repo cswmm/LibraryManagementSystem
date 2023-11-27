@@ -560,13 +560,29 @@ public class Main extends JFrame implements ActionListener {
         goButton.addActionListener(this);
 
         viewBooksButton = new JButton("View Checked Out Books");
-        viewBooksButton.setBounds(225, 160, 320, 50);
+        viewBooksButton.setBounds(245, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
         JLabel nameLabel = new JLabel("Hello " + u.getUsername());
         nameLabel.setBounds(60, 160, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(new Color(229, 229, 229));
+
+        LinkedList<Book> booklist = new LinkedList<>();
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(int i = 0; i < library.getBooks().size(); i++){
+            booklist.add(library.getBooks().get(i));
+        }
+
+        listModel.add(0, "                          Books in Library");
+        for (Book book : booklist) {
+            listModel.addElement(book.getName()+ " "+book.getAuthor()+ " "+book.getGenre()+ " "+ book.getYear());
+        }
+        JList<String> jList = new JList<>(listModel);
+
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(235,210,340,150);
 
         JPanel circlePanel = new JPanel() {
             @Override
@@ -599,6 +615,7 @@ public class Main extends JFrame implements ActionListener {
         circlePanel.setOpaque(false);
         panel.add(circlePanel);
 
+        panel.add(scrollPane);
         panel.add(applicationLabel);
         panel.add(optionsButton);
         panel.add(searchField);
@@ -639,7 +656,7 @@ public class Main extends JFrame implements ActionListener {
         goButton.addActionListener(this);
 
         viewBooksButton = new JButton("View Checked Out Books");
-        viewBooksButton.setBounds(225, 160, 320, 50);
+        viewBooksButton.setBounds(245, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
         JLabel nameLabel = new JLabel("Hello " + u.getUsername());
@@ -651,6 +668,22 @@ public class Main extends JFrame implements ActionListener {
         premiumLabel.setBounds(70, 310, 400, 60);
         premiumLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         premiumLabel.setForeground(new Color(255, 255, 255));
+
+        LinkedList<Book> booklist = new LinkedList<>();
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(int i = 0; i < library.getBooks().size(); i++){
+            booklist.add(library.getBooks().get(i));
+        }
+
+        listModel.add(0, "                          Books in Library");
+        for (Book book : booklist) {
+            listModel.addElement(book.getName()+ " "+book.getAuthor()+ " "+book.getGenre()+ " "+ book.getYear());
+        }
+        JList<String> jList = new JList<>(listModel);
+
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(235,210,340,150);
 
         JPanel circlePanel = new JPanel() {
             @Override
@@ -684,6 +717,7 @@ public class Main extends JFrame implements ActionListener {
         circlePanel.setOpaque(false);
         panel.add(circlePanel);
 
+        panel.add(scrollPane);
         panel.add(applicationLabel);
         panel.add(optionsButton);
         panel.add(searchField);
