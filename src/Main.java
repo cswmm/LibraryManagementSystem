@@ -276,12 +276,13 @@ public class Main extends JFrame implements ActionListener {
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | " + results.get(i).getGenre());
                     menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
+                    User u = createTempUser();
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            showBookInfo(results.get(finalI), library.getUser(u.getUsername(), u.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -307,12 +308,13 @@ public class Main extends JFrame implements ActionListener {
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
                     menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
+                    User u = createTempUser();
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            showBookInfo(results.get(finalI), library.getUser(u.getUsername(), u.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -338,12 +340,13 @@ public class Main extends JFrame implements ActionListener {
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | " + results.get(i).getAuthor());
                     menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
+                    User u = createTempUser();
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            showBookInfo(results.get(finalI), library.getUser(u.getUsername(), u.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);
@@ -366,12 +369,13 @@ public class Main extends JFrame implements ActionListener {
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | Year: " + results.get(i).getYear());
                     menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
+                    User u = createTempUser();
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showBookInfo(results.get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            showBookInfo(results.get(finalI), library.getUser(u.getUsername(), u.getPassword()));
                         }
                     });
                     popupMenu2.add(menuItemOne);

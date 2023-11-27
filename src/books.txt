@@ -8,4 +8,4 @@ Historical Tapestry,Sarah Brown,history,2005
 Laugh Out Loud,Chris Miller,comedy,2011
 Hearts Entwined,David Thompson,romance,2003
 The Communist Manifesto,Karl Marx,comedy,1848
-Mein Kampf,Adolf Hitler,comedy,1925
+Mein Kampf,Adolf Hitler,comedy,1925Life,Joker,comedy,2019
