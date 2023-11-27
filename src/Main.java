@@ -1,7 +1,15 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.geom.Ellipse2D;
@@ -29,13 +37,15 @@ public class Main extends JFrame implements ActionListener {
     JButton viewBooksButton;
 
     JTextField searchField;
-    private JComboBox<String> bookComboBox;
-
-    private boolean searchByGenre = false;
 
     ArrayList<Book>results = new ArrayList<>();
 
     JPopupMenu popupMenu2;
+
+    private Librarian librarian;
+
+    private boolean deletedBook = false;
+    private boolean deletedUser = false;
 
 
     public static void main(String[] args) {
@@ -44,15 +54,20 @@ public class Main extends JFrame implements ActionListener {
     }
 
     public Main() {
+        //initializes librarian, users, and books in arraylists and file-IO system
         library.initializeLibrarian();
         library.initializeUsers();
         library.initializeBooks();
         System.out.println(library.librarians);
         System.out.println(library.users);
         System.out.println(library.books);
+        //allows quick access to only librarian
+        librarian = library.getLibrarians().get(0);
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
         panel = startScreenPanel();
+        //chose to not make screen resizable
+        this.setResizable(false);
         this.add(panel);
     }
 
@@ -64,6 +79,7 @@ public class Main extends JFrame implements ActionListener {
         } else if (e.getActionCommand().equals("Sign Up")) {
             newPanel = createSignupPanel();
         } else if (e.getActionCommand().equals("Go Back")) {
+            //prevents user from going back to the start screen if they are in a login page
             if (inUserLoginPanel){
                 if (inLibrarianPanel){
                     newPanel = createLibrarianPanel();
@@ -77,25 +93,32 @@ public class Main extends JFrame implements ActionListener {
             }
         }
         else if (e.getActionCommand().equals("Back")) {
-                    newPanel = createLibrarianPanel();
-
-
+            newPanel = createLibrarianPanel();
         }
         else if (e.getActionCommand().equals("User")) {
             newPanel = createUserLoginPanel();
-        } else if (e.getActionCommand().equals("Admin")) {
+        }
+        else if (e.getActionCommand().equals("Admin")) {
             newPanel = createAdminLoginPanel();
-        } else if (e.getActionCommand().equals("Sign-Up")){
+        }
+        else if (e.getActionCommand().equals("Sign-Up")){
             try {
-                System.out.println("Signed Up Fields");
                 //print statements so you remember user-name and password
+                System.out.println("Signed Up Fields");
                 System.out.println("Username: " + usernameField.getText());
                 System.out.println(passwordField.getPassword());
-                library.passwordRequirement(passwordField.getPassword());
-                //creates and adds user to library
-                library.addUser(usernameField.getText(), passwordField.getPassword(), "", "");
-                JOptionPane.showMessageDialog(null, "Sign In Successful!");
-
+                //checks if the username and password entered for sign up both don't already exist
+                if (!(library.containsUserName(usernameField.getText()) || library.containsPassword(passwordField.getPassword()))){
+                    //checks if password is above 8 letters, has upper and lower case letters, numbers, and special characters
+                    library.passwordRequirement(passwordField.getPassword());
+                    //creates and adds user to library
+                    library.addUser(usernameField.getText(), passwordField.getPassword());
+                    User u = library.getUser(usernameField.getText(), passwordField.getPassword());
+                    JOptionPane.showMessageDialog(null, "Sign In Successful!");
+                    newPanel = createUserPagePanel(u);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Must enter a unique password/username. Try again");
+                }
             } catch (PasswordException ex) {
                 JOptionPane.showMessageDialog(null, "Password error: " + ex.getMessage());
             }
@@ -106,15 +129,15 @@ public class Main extends JFrame implements ActionListener {
             System.out.println(enterPasswordField.getPassword());
             //creates new unique user panel
             if (library.containsUserName(enterUsernameField.getText()) && library.containsPassword(enterPasswordField.getPassword())){
-                User u = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
+                User u = createTempUser();
                 if (u.hasPremium()){
-                    newPanel = createPremiumUserPagePanel();
+                    newPanel = createPremiumUserPagePanel(u);
                 } else {
-                    newPanel = createUserPagePanel();
+                    newPanel = createUserPagePanel(u);
                 }
             }
             else {
-                System.out.println("Invalid");
+                System.out.println("Invalid Login");
             }
 
         }
@@ -125,7 +148,7 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getActionCommand().equals("Options")) {
             //creates drop menu when options menu is pressed in user panel
-            User u = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
+            User u = createTempUser();
 
             JPopupMenu popupMenu = new JPopupMenu();
             JMenuItem menuItem1 = new JMenuItem("Account Info");
@@ -148,7 +171,8 @@ public class Main extends JFrame implements ActionListener {
         }
         else if (e.getActionCommand().equals("View Checked Out Books")){
             JPopupMenu userBooksMenu = new JPopupMenu();
-            User user = library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
+            //fix
+            User user = createTempUser();
 
             for (int i = 0; i < user.getBooks().size(); i++){
                 JMenuItem menuItemOne = new JMenuItem(user.getBooks().get(i).toString());
@@ -158,7 +182,7 @@ public class Main extends JFrame implements ActionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         //add check out button to J Option pane that adds to users check out list
-                        showBookReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                        showReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
                     }
                 });
                 userBooksMenu.add(menuItemOne);
@@ -172,7 +196,7 @@ public class Main extends JFrame implements ActionListener {
         else if (e.getActionCommand().equals("Account Info")){
             String enterPassword = JOptionPane.showInputDialog("Enter password to see account information");
             if (enterPassword.equals(String.valueOf(enterPasswordField.getPassword()))){
-                //displays username and password, add library card number
+                //displays username and password
                 showUserProfile(library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
             }
             else {
@@ -180,9 +204,11 @@ public class Main extends JFrame implements ActionListener {
             }
         } else if (e.getActionCommand().equals("Buy Premium")) {
             String upgradeToPremium = JOptionPane.showInputDialog("Upgrade to premium for $5 a month. Enter your password");
-            if (upgradeToPremium.equals(String.valueOf(enterPasswordField.getPassword()))){
-                library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()).setPremium(true);
-                JOptionPane.showMessageDialog(null, "Welcome to the premium club. Sign in again to access your premium account");
+            User u = createTempUser();
+            if (upgradeToPremium.equals(String.valueOf(u.getPassword()))){
+                library.upgradePremium(u);
+                JOptionPane.showMessageDialog(null, "Welcome to the premium club. You can now check out up to 6 books");
+                newPanel = createPremiumUserPagePanel(u);
             } else {
                 JOptionPane.showMessageDialog(null, "Password Incorrect. Try Again");
             }
@@ -210,7 +236,6 @@ public class Main extends JFrame implements ActionListener {
             menuItem3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    searchByGenre = true;
                     searchButton.setText("Search by Genre");
                 }
             });
@@ -249,8 +274,8 @@ public class Main extends JFrame implements ActionListener {
                 popupMenu2 = new JPopupMenu();
 
                 for (int i = 0; i < results.size(); i++){
-                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
-                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | " + results.get(i).getGenre());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
@@ -268,9 +293,12 @@ public class Main extends JFrame implements ActionListener {
             }
             if (searchButton.getText().equals("Search by Name")){
                 for (int i = 0; i < library.books.size(); i++){
-                    if (library.books.get(i).getName().equals(searchField.getText())){
-                        System.out.println("Added to result list");
-                        results.add(library.books.get(i));
+                    String [] arr = library.books.get(i).getName().split(" ");
+                    for (int j = 0; j < arr.length; j++){
+                        if (searchField.getText().equals(arr[j])){
+                            System.out.println("Added to result list");
+                            results.add(library.books.get(i));
+                        }
                     }
                 }
 
@@ -278,7 +306,7 @@ public class Main extends JFrame implements ActionListener {
 
                 for (int i = 0; i < results.size(); i++){
                     JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
-                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
@@ -296,17 +324,20 @@ public class Main extends JFrame implements ActionListener {
             }
             if (searchButton.getText().equals("Search by Author")){
                 for (int i = 0; i < library.books.size(); i++){
-                    if (library.books.get(i).getAuthor().equals(searchField.getText())){
-                        System.out.println("Added to result list");
-                        results.add(library.books.get(i));
+                    String [] arr = library.books.get(i).getAuthor().split(" ");
+                    for (int j = 0; j < arr.length; j++){
+                        if (searchField.getText().equals(arr[j])){
+                            System.out.println("Added to result list");
+                            results.add(library.books.get(i));
+                        }
                     }
                 }
 
                 popupMenu2 = new JPopupMenu();
 
                 for (int i = 0; i < results.size(); i++){
-                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
-                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | " + results.get(i).getAuthor());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
@@ -333,8 +364,8 @@ public class Main extends JFrame implements ActionListener {
                 popupMenu2 = new JPopupMenu();
 
                 for (int i = 0; i < results.size(); i++){
-                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString());
-                    menuItemOne.setPreferredSize(new java.awt.Dimension(300, 20));
+                    JMenuItem menuItemOne = new JMenuItem(results.get(i).toString() + " | Year: " + results.get(i).getYear());
+                    menuItemOne.setPreferredSize(new java.awt.Dimension(350, 20));
                     int finalI = i;
                     menuItemOne.addActionListener(new ActionListener() {
                         @Override
@@ -369,6 +400,13 @@ public class Main extends JFrame implements ActionListener {
 
         this.revalidate();
         this.repaint();
+    }
+
+    public User createTempUser(){
+        if (enterUsernameField == null){
+            return library.getUser(usernameField.getText(), passwordField.getPassword());
+        }
+        return library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
     }
 
     private JPanel createLibrarianPanel() {
@@ -452,6 +490,37 @@ public class Main extends JFrame implements ActionListener {
         signupButton.addActionListener(this);
         loginButton.addActionListener(this);
 
+        JPanel circlePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                //super.paintComponent(g);
+
+                Graphics2D g2d = (Graphics2D) g.create();
+
+                // Create a white circle using Ellipse2D
+                Ellipse2D.Double circle = new Ellipse2D.Double(200, 130, 200, 200);
+                g2d.setColor(Color.WHITE);
+
+                // Fill the circle
+                g2d.fill(circle);
+                g2d.setClip(circle);
+
+                try {
+                    BufferedImage image = ImageIO.read(new File("Images/img_2.png")); // Replace with the actual path to your image
+                    g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                g2d.setClip(null);
+            }
+        };
+
+        circlePanel.setLayout(null);
+        circlePanel.setBounds(0, 0, 600, 400);
+        circlePanel.setOpaque(false);
+        panel.add(circlePanel);
+
         panel.add(applicationLabel);
         panel.add(loginButton);
         panel.add(signupButton);
@@ -460,7 +529,7 @@ public class Main extends JFrame implements ActionListener {
     }
 
     //user page when you log in
-    private JPanel createUserPagePanel() {
+    private JPanel createUserPagePanel(User u) {
         inUserLoginPanel = false;
         inLibrarianPanel = false;
 
@@ -490,6 +559,11 @@ public class Main extends JFrame implements ActionListener {
         viewBooksButton.setBounds(225, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
+        JLabel nameLabel = new JLabel("Hello " + u.getUsername());
+        nameLabel.setBounds(60, 160, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(new Color(229, 229, 229));
+
         JPanel circlePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -498,24 +572,24 @@ public class Main extends JFrame implements ActionListener {
                 Graphics2D g2d = (Graphics2D) g.create();
 
                 // Create a white circle using Ellipse2D
-                Ellipse2D.Double circle = new Ellipse2D.Double(60, 175, 125, 125);
+                Ellipse2D.Double circle = new Ellipse2D.Double(60, 215, 125, 125);
                 g2d.setColor(Color.WHITE);
 
                 // Fill the circle
                 g2d.fill(circle);
+                g2d.setClip(circle);
 
-                g2d.setColor(Color.BLACK);
-                String text = "Hello " + enterUsernameField.getText();
-                FontMetrics fontMetrics = g2d.getFontMetrics();
-                int x = (int) (circle.getCenterX() - fontMetrics.stringWidth(text) / 2);
-                int y = (int) (circle.getCenterY() + fontMetrics.getHeight() / 4);
-                g2d.drawString(text, x, y);
+                try {
+                    BufferedImage image = ImageIO.read(new File("Images/img.png")); // Replace with the actual path to your image
+                    g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                //g2d.dispose();
+                g2d.setClip(null);
             }
         };
 
-        // Set the layout to null for the custom drawing
         circlePanel.setLayout(null);
         circlePanel.setBounds(0, 0, 600, 400);
         circlePanel.setOpaque(false);
@@ -527,13 +601,14 @@ public class Main extends JFrame implements ActionListener {
         panel.add(searchButton);
         panel.add(goButton);
         panel.add(viewBooksButton);
+        panel.add(nameLabel);
 
         return panel;
 
     }
 
     //premium user page when you log in
-    private JPanel createPremiumUserPagePanel() {
+    private JPanel createPremiumUserPagePanel(User u) {
         inUserLoginPanel = false;
         inLibrarianPanel = false;
 
@@ -563,6 +638,16 @@ public class Main extends JFrame implements ActionListener {
         viewBooksButton.setBounds(225, 160, 320, 50);
         viewBooksButton.addActionListener(this);
 
+        JLabel nameLabel = new JLabel("Hello " + u.getUsername());
+        nameLabel.setBounds(60, 150, 400, 60);
+        nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        nameLabel.setForeground(new Color(255, 255, 255));
+
+        JLabel premiumLabel = new JLabel("Premium");
+        premiumLabel.setBounds(70, 310, 400, 60);
+        premiumLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
+        premiumLabel.setForeground(new Color(255, 255, 255));
+
         JPanel circlePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -571,27 +656,21 @@ public class Main extends JFrame implements ActionListener {
                 Graphics2D g2d = (Graphics2D) g.create();
 
                 // Create a white circle using Ellipse2D
-                Ellipse2D.Double circle = new Ellipse2D.Double(60, 175, 125, 125);
+                Ellipse2D.Double circle = new Ellipse2D.Double(60, 200, 125, 125);
                 g2d.setColor(Color.WHITE);
 
                 // Fill the circle
                 g2d.fill(circle);
+                g2d.setClip(circle);
 
-                g2d.setColor(Color.BLACK);
-                String text = "Hello Premium " + enterUsernameField.getText();
-                FontMetrics fontMetrics = g2d.getFontMetrics();
+                try {
+                    BufferedImage image = ImageIO.read(new File("Images/img_1.png")); // Replace with the actual path to your image
+                    g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                // Calculate the maximum font size to fit the text within the circle
-                int maxFontSize = (int) (circle.getHeight() * 0.1); // Adjust the factor as needed
-
-                // Set the font size to be the smaller of the maxFontSize and the available height
-                int fontSize = Math.min(fontMetrics.getHeight(), maxFontSize);
-
-                g2d.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, fontSize));                int x = (int) (circle.getCenterX() - fontMetrics.stringWidth(text) / 2);
-                int y = (int) (circle.getCenterY() + fontMetrics.getHeight() / 4);
-                g2d.drawString(text, x, y);
-
-                //g2d.dispose();
+                g2d.setClip(null);
             }
         };
 
@@ -607,6 +686,8 @@ public class Main extends JFrame implements ActionListener {
         panel.add(searchButton);
         panel.add(goButton);
         panel.add(viewBooksButton);
+        panel.add(nameLabel);
+        panel.add(premiumLabel);
 
         return panel;
     }
@@ -833,7 +914,7 @@ public class Main extends JFrame implements ActionListener {
                     }
                 }
                 if(count == 0){
-                    library.addBook(bookName, bookAuthor, bookGenre, bookYear);
+                    librarian.addBook(library, bookName, bookAuthor, bookGenre, bookYear);
                     JOptionPane.showMessageDialog(null,"Success add book to library system");
                 } else {
                     JOptionPane.showMessageDialog(null,"Book already in library system");
@@ -867,8 +948,8 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
-        JLabel nameLabel = new JLabel("Remove Book");
-        nameLabel.setBounds(40, 75, 400, 60);
+        JLabel nameLabel = new JLabel("Show Book List");
+        nameLabel.setBounds(250, 100, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
@@ -876,67 +957,38 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
-        JLabel bookNameLabel = new JLabel("Enter Book Name:");
-        bookNameLabel.setBounds(100, 145, 150, 30);
+        LinkedList<Book> booklist = new LinkedList<>();
 
-        JTextField bookNameField = new JTextField();
-        bookNameField.setBounds(95, 175, 200, 30);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(int i = 0; i < library.getBooks().size(); i++){
+            booklist.add(library.getBooks().get(i));
+        }
+        for (Book book : booklist) {
+            listModel.addElement(book.getName()+ " "+book.getAuthor()+ " "+book.getGenre()+ " "+ book.getYear());
+        }
+        JList<String> jList = new JList<>(listModel);
 
-        JLabel bookAuthorLabel = new JLabel("Enter Author:");
-        bookAuthorLabel.setBounds(315, 145, 150, 30);
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(100,100,400,400);
 
-        JTextField bookAuthorField = new JTextField();
-        bookAuthorField.setBounds(305, 175, 200, 30);
-
-        JLabel bookGenreLabel = new JLabel("Enter Genre:");
-        bookGenreLabel.setBounds(100,205,150,30);
-
-        JTextField bookGenreField = new JTextField();
-        bookGenreField.setBounds(95,235,200,30);
-
-        JLabel bookYearLabel = new JLabel("Enter Year:");
-        bookYearLabel.setBounds(315,205,150,30);
-
-        JTextField bookYearField = new JTextField();
-        bookYearField.setBounds(305,235,200,30);
-
-        JButton addBookButton = new JButton("Remove Book");
-        addBookButton.setBounds(240, 300, 100, 45);
-        addBookButton.addActionListener(new ActionListener() {
+        jList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int count = 0;
-                String bookName = bookNameField.getText();
-                String bookAuthor = bookAuthorField.getText();
-                String bookGenre = bookGenreField.getText();
-                int bookYear = Integer.parseInt(bookYearField.getText());
-                for(Book book : library.getBooks()) {
-                    if(bookName.equals(book.getName()) && Objects.equals(bookAuthor, book.getAuthor()) && Objects.equals(bookGenre, book.getGenre()) && bookYear == book.getYear()) {
-                        count++;
-                        library.removeBook(book);
-                        JOptionPane.showMessageDialog(null,"Success remove book from library system");
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    Book b = library.getBooks().get(jList.getSelectedIndex());
+                    showDeleteBookInfo(b);
+                    if (deletedBook){
+                        listModel.remove(jList.getSelectedIndex());
+                        deletedBook = false;
                     }
                 }
-                if(count == 0){
-                    JOptionPane.showMessageDialog(null,"Book not in library system");
-                }
-
             }
         });
 
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
-        panel.add(bookNameLabel);
-        panel.add(bookAuthorLabel);
-        panel.add(bookGenreLabel);
-        panel.add(bookYearLabel);
-        panel.add(bookNameField);
-        panel.add(bookAuthorField);
-        panel.add(bookGenreField);
-        panel.add(bookYearField);
-        panel.add(addBookButton);
-
+        panel.add(scrollPane);
         return panel;
     }
 
@@ -991,8 +1043,8 @@ public class Main extends JFrame implements ActionListener {
 
         JLabel applicationLabel = createApplicationLabel(new Color(169, 138, 208));
 
-        JLabel nameLabel = new JLabel("Remove User");
-        nameLabel.setBounds(40, 75, 400, 60);
+        JLabel nameLabel = new JLabel("Show User List");
+        nameLabel.setBounds(250, 100, 400, 60);
         nameLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 22));
         nameLabel.setForeground(Color.white);
 
@@ -1000,39 +1052,39 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
-        JLabel usernameLLabel = new JLabel("Enter Username:");
-        usernameLLabel.setBounds(210, 145, 150, 30);
+        LinkedList<String> usernamelist = new LinkedList<>();
 
-        JTextField usernameLField = new JTextField();
-        usernameLField.setBounds(205, 175, 200, 30);
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(User user: library.users){
+            usernamelist.add(user.getUsername());
+        }
+        for (String string : usernamelist) {
+            listModel.addElement(string);
+        }
+        JList<String> jList = new JList<>(listModel);
 
-        JButton removeUserButton = new JButton("Remove User");
-        removeUserButton.setBounds(240, 220, 110, 45);
-        removeUserButton.addActionListener(new ActionListener() {
+        // Add the JList to a JScrollPane to allow for scrolling
+        JScrollPane scrollPane = new JScrollPane(jList);
+        scrollPane.setBounds(100,100,400,400);
+
+        jList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int count = 0;
-                for(User user: library.getUsers()){
-                   if(user.getUsername().equals(usernameLField.getText())){
-                       System.out.println("true");
-                       count++;
-                       library.removeUser(user);
-                   }
-               }
-               if(count == 0 ){
-                   JOptionPane.showMessageDialog(null, "Username not exist, please enter anther username");
-               } else {
-                   JOptionPane.showMessageDialog(null, "User account removed");
-               }
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    User u = library.getUsers().get(jList.getSelectedIndex());
+                    showDeleteUserInfo(u);
+                    if (deletedUser){
+                        listModel.remove(jList.getSelectedIndex());
+                        deletedUser = false;
+                    }
+                }
             }
         });
 
         panel.add(applicationLabel);
         panel.add(nameLabel);
         panel.add(optionsButton);
-        panel.add(usernameLLabel);
-        panel.add(usernameLField);
-        panel.add(removeUserButton);
+        panel.add(scrollPane);
 
         return panel;
     }
@@ -1080,38 +1132,8 @@ public class Main extends JFrame implements ActionListener {
 
     private void showUserProfile(User user) {
         String name = user.getUsername();
-        String userName = user.getUsername();
         String password = String.valueOf(user.getPassword());
-
-        String profileMessage = "Name: " + name + "\n" + "Password: " + password + "\n" + "Library Cart";
-        /*JComboBox<String> bookComboBox = new JComboBox<>(user.getBooks().toArray(new String[0]));
-
-        // Create the remove button
-        JButton removeButton = new JButton("Remove Book");
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Get the selected book from the combo box
-                String selectedBook = (String) bookComboBox.getSelectedItem();
-
-                // Check if a book is selected
-                if (selectedBook != null) {
-                    // Remove the selected book from the ArrayList
-                    user.getBooks().remove(selectedBook);
-
-                    // Update the combo box with the updated book list
-                    bookComboBox.setModel(new DefaultComboBoxModel<>(user.getBooks().toArray(new String[0])));
-                }
-            }
-        });
-
-        // Create a panel to hold components
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Books:"));
-        panel.add(bookComboBox);
-        panel.add(removeButton);
-
-        */
+        String profileMessage = "Name: " + name + "\n" + "Password: " + password + "\n" + "# of Checked Out Books: " + user.getBooks().size();
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -1140,46 +1162,20 @@ public class Main extends JFrame implements ActionListener {
 
         // Handle the user's choice
         if (choice == 1) {
-            // User clicked "Check Out"
-            // Add your checkout logic here
-            if (!user.hasPremium()){
-                if (user.getBooks().size() < 3){
-                    if (!book.isCheckedOut()){
-                        user.getBooks().add(book);
-                        book.setCheckedOut(true);
-                        System.out.println(user.getBooks());
-                        JOptionPane.showMessageDialog(this, "Book Checked Out!");
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(this, "Sorry. Book already checked out!");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Sorry. You can't check out more than 3 books. Upgrade to premium to check out more books");
-                }
+            try {
+                // User clicked "Check Out"
+                // Add your checkout logic here
+                user.bookCheckoutRequirement(book);
+                user.checkout(book);
+                System.out.println(user.getBooks());
+                JOptionPane.showMessageDialog(this, "Book Checked Out!");
+            } catch (BookCheckoutException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
             }
-            else {
-                if (user.getBooks().size() < 5){
-                    if (!book.isCheckedOut()){
-                        user.getBooks().add(book);
-                        book.setCheckedOut(true);
-                        System.out.println(user.getBooks());
-                        JOptionPane.showMessageDialog(this, "Book Checked Out!");
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(this, "Sorry. Book already checked out!");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(this, "Sorry. You can't check out more than 5 books");
-                }
-            }
-
-
         }
     }
 
-    private void showBookReturnBookInfo(Book book, User user) {
+    private void showReturnBookInfo(Book book, User user) {
         String name = book.getName();
         String author = book.getAuthor();
         String genre = book.getGenre();
@@ -1205,12 +1201,72 @@ public class Main extends JFrame implements ActionListener {
         // Handle the user's choice
         if (choice == 1) {
             // User clicked "Return Book"
-            // Add your checkout logic here
-            book.setCheckedOut(false);
-            user.getBooks().remove(book);
+            user.returnBook(book);
             System.out.println(user.getBooks());
             JOptionPane.showMessageDialog(this, "Book Returned!");
 
+        }
+    }
+
+    private void showDeleteBookInfo(Book book){
+        String name = book.getName();
+        String author = book.getAuthor();
+        String genre = book.getGenre();
+        String year = String.valueOf(book.getYear());
+
+        String bookMessage = " Title: " + name + "\n" + "Author: " + author + "\n" + "Genre: " + genre + "\n" + "Year: " + year;
+
+        // Create an array of options (buttons)
+        Object[] options = {"Back", "Remove Book"};
+
+        // Display the JOptionPane with a custom option panel
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                bookMessage,
+                "Book",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        // Handle the user's choice
+        if (choice == 1) {
+            // User clicked "Return Book"
+            librarian.removeBook(library, book);
+            deletedBook = true;
+            JOptionPane.showMessageDialog(null,"Success. Removed book from library system");
+        }
+    }
+
+    private void showDeleteUserInfo(User user){
+        String name = user.getUsername();
+        String password = String.valueOf(user.getPassword());
+
+        String bookMessage = " Username: " + name + "\n" + "Password: " + password;
+
+        // Create an array of options (buttons)
+        Object[] options = {"Back", "Remove User"};
+
+        // Display the JOptionPane with a custom option panel
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                bookMessage,
+                "User",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        // Handle the user's choice
+        if (choice == 1) {
+            // User clicked "Remove User"
+            librarian.removeUser(library, user);
+            deletedUser = true;
+            JOptionPane.showMessageDialog(null,"Success. Removed User from library system");
         }
     }
 
