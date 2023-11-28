@@ -8,20 +8,17 @@ public class Library {
     public ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
     public ArrayList<Book> books;
-    protected ArrayList<Book> requestBook;
 
     public Library(){
         users = new ArrayList<>();
         librarians = new ArrayList<>();
         books = new ArrayList<>();
-        requestBook = new ArrayList<>();
     }
 
     // Method to upgrade user privileges once they buy premium
-    public static void givePremium(User u){
-        // Type case given user to a PremiumUser
-        PremiumUser payToWin = (PremiumUser) u;
-        u = payToWin;
+    public void upgradePremium(User u){
+        //library gives user premium access by setting it's boolean to true
+        u.setPremium(true);
     }
 
 
@@ -85,7 +82,7 @@ public class Library {
     }
     // method to add a user to the system
     // called after a user enters their information in signup page
-    public void addUser(String username, char[] password, String security1, String security2) throws PasswordException {
+    public void addUser(String username, char[] password) throws PasswordException {
         for (User u: users){
             if(u.getUsername().equals(username) && u.getPassword().equals(password)){
                 return;
@@ -315,4 +312,5 @@ public class Library {
             return;
         }
     }
+
 }

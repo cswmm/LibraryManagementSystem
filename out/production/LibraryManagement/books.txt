@@ -9,4 +9,4 @@ Laugh Out Loud,Chris Miller,comedy,2011
 Hearts Entwined,David Thompson,romance,2003
 The Communist Manifesto,Karl Marx,comedy,1848
 Mein Kampf,Adolf Hitler,comedy,1925
-D,D,D,1
+Life,Joker,comedy,2019

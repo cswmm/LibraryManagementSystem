@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -8,13 +9,7 @@ public class User extends Library {
     private char[] password;
     private boolean isPremium = false; // User initially not Premium User
 
-    private LinkedList<String> securityAnswer;
-
     private ArrayList<Book> books;
-    private ArrayList<Book> bookhistory;
-
-    private ArrayList<Book> checkoutHistory;
-
 
     public User(){
     }
@@ -24,7 +19,7 @@ public class User extends Library {
         this.books = new ArrayList<>();
     }
 
-    public void terminateAccount() {
+    /*public void terminateAccount() {
         username = null;
         password = null;
         users.remove(this);
@@ -52,6 +47,30 @@ public class User extends Library {
             return "Information not match any account";
         }
         return "";
+    }*/
+
+    //method that handles exceptions when user checks out book
+    public void bookCheckoutRequirement(Book book) throws BookCheckoutException {
+        //if user has not upgraded premium, that means they can only check out 3 books
+        if (!isPremium) {
+            if (getBooks().size() < 3) {
+                if (book.isCheckedOut()) {
+                    throw new BookCheckoutException("Sorry. Book already checked out!");
+                }
+            } else {
+                throw new BookCheckoutException("Sorry. You can't check out more than 3 books. Upgrade to premium to check out more books");
+            }
+        }
+        else {
+            //if user has upgraded to premium, that means they can check out 6 books
+            if (getBooks().size() < 6) {
+                if (book.isCheckedOut()) {
+                    throw new BookCheckoutException("Sorry. Book already checked out!");
+                }
+            } else {
+                throw new BookCheckoutException("Sorry. You can't check out more than 6 books");
+            }
+        }
     }
 
     // User search by type in book name and/or a list of genre
@@ -89,18 +108,16 @@ public class User extends Library {
         }
         return searchList;
     }*/
-    public void checkout(ArrayList<Book> cart){
-        // We need to think of how we will implement this first
-        // Do we want a cart? Do we check if the book is available before or after they add to cart?
-        books.addAll(cart);
-        bookhistory.addAll(cart);
+    public void checkout(Book book){
+        books.add(book);
+        book.setCheckedOut(true);
     }
-    public void returnBook(ArrayList<Book> books){
-        for (Book book : books) {
-            this.books.remove(book);
-        }
+
+    public void returnBook(Book book){
+        book.setCheckedOut(false);
+        books.remove(book);
     }
-    public void requestionExtension(Book book){
+    /*public void requestionExtension(Book book){
     }
     public void requestSuggestedBooks(ArrayList<Book> Suggestion){
 
@@ -110,9 +127,9 @@ public class User extends Library {
     }
     public ArrayList<Book> checkCheckedOutBookHistory(){
         return bookhistory;
-    }
+    }*/
 
-    public void buyPremium() {
+    /*public void buyPremium() {
         // Check if the user has paid first
         Library.givePremium(this);
         isPremium = true;
@@ -121,9 +138,9 @@ public class User extends Library {
     //Click a button to get all information of the account
     public String getInformation(){
         return "Username: " + getUsername() + "\nPassword:  " + getPassword();
-    }
+    }*/
 
-    public ArrayList<Book> getBooks() { // I believe getBooks() and checkCheckedOutBook() are the same
+    public ArrayList<Book> getBooks() {
         return books;
     }
 
@@ -135,24 +152,22 @@ public class User extends Library {
         return this.password;
     }
 
-
-    public void setUsername(String username) {
+    /*public void setUsername(String username) {
         this.username = username;
     }
 
     public void setPassword(char[] password){
         this.password = password;
-    }
+    }*/
 
     public boolean hasPremium(){
         return isPremium;
     }
 
+    //User don't set premium status, library sets it for them as seen in method in Library class
     protected void setPremium(Boolean isPremium){
         this.isPremium = isPremium;
     }
-    //User cannot set their premium status
-
 
     @Override
     public String toString() {
