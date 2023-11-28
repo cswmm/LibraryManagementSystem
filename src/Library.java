@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Library {
-    public ArrayList<User> users;
+    static ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
     public ArrayList<Book> books;
 
@@ -103,8 +103,33 @@ public class Library {
         }
     }
 
+    public static void addUser(User t){
+        for (User u: users){
+            if(u.getUsername().equals(t.getUsername()) && u.getPassword().equals(t.getPassword())){
+                return;
+            }
+        }
+
+        // file io- adding a user's username and password to the database (users txt file)
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(
+                    "src/users.txt", true));
+            // write username and password separated by a comma at the end of the text file
+            StringBuilder sb = new StringBuilder();
+            for (int i=0; i<t.getBooks().size(); i++){
+                sb.append("," + t.getBooks().get(i).getName());
+            }
+            bw.write(t.getUsername() + "," + String.valueOf(t.getPassword()) + sb + "\n");
+            // add to arraylist
+            users.add(t);
+            bw.close();
+        } catch (Exception e) {
+            return;
+        }
+    }
+
     // method to remove a user from the system
-    public void removeUser(User user){
+    public static void removeUser(User user){
         // first checks if the user is in the system
         if (users.remove(user)){
             // if it is, it will already be removed from the arraylist
@@ -259,6 +284,7 @@ public class Library {
     // method to read from database at start of program
     public void initializeUsers(){
         try {
+            initializeBooks();
             BufferedReader br = new BufferedReader(
                     new FileReader("src/users.txt"));
             String str;
@@ -267,7 +293,15 @@ public class Library {
                 // converts string into string array of each part separated by a comma as an element
                 String[] parts = str.split(",");
                 // create a new user and add to arraylist
-                users.add(new User(parts[0], parts[1].toCharArray()));
+                User u = new User(parts[0], parts[1].toCharArray());
+                for (int i=2; i<parts.length; i++){
+                    for (int j=0; j<books.size(); j++){
+                        if(books.get(j).getName().equals(parts[i])){
+                            u.checkout(books.get(j));
+                        }
+                    }
+                }
+                users.add(u);
             }
             br.close();
         } catch (Exception e){

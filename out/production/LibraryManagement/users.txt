@@ -1,3 +1,2 @@
-User,User123!
 Test,Test123!
-Toshi,Toshi123!
+User,User123!,The Hilarious Adventures
