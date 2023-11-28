@@ -58,7 +58,7 @@ public class Main extends JFrame implements ActionListener {
         library.initializeLibrarian();
         library.initializeUsers();
         System.out.println(library.librarians);
-        System.out.println(library.users);
+        System.out.println(library.getUsers());
         System.out.println(library.books);
         //allows quick access to only librarian
         librarian = library.getLibrarians().get(0);
@@ -181,7 +181,11 @@ public class Main extends JFrame implements ActionListener {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             //add check out button to J Option pane that adds to users check out list
-                            showReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            try {
+                                showReturnBookInfo(user.getBooks().get(finalI), library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword()));
+                            } catch (PasswordException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     });
                     userBooksMenu.add(menuItemOne);
@@ -1107,7 +1111,7 @@ public class Main extends JFrame implements ActionListener {
         LinkedList<String> usernamelist = new LinkedList<>();
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for(User user: library.users){
+        for(User user: library.getUsers()){
             usernamelist.add(user.getUsername());
         }
         for (String string : usernamelist) {
@@ -1168,7 +1172,7 @@ public class Main extends JFrame implements ActionListener {
         LinkedList<String> usernamelist = new LinkedList<>();
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for(User user: library.users){
+        for(User user: library.getUsers()){
             usernamelist.add(user.getUsername());
         }
         for (String string : usernamelist) {
@@ -1225,17 +1229,19 @@ public class Main extends JFrame implements ActionListener {
                 // Add your checkout logic here
                 user.bookCheckoutRequirement(book);
                 user.checkout(book);
-                Library.removeUser(user);
-                Library.addUser(user);
+                library.removeUser(user);
+                library.addUser(user);
                 System.out.println(user.getBooks());
                 JOptionPane.showMessageDialog(this, "Book Checked Out!");
             } catch (BookCheckoutException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
+            } catch (PasswordException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    private void showReturnBookInfo(Book book, User user) {
+    private void showReturnBookInfo(Book book, User user) throws PasswordException {
         String name = book.getName();
         String author = book.getAuthor();
         String genre = book.getGenre();
@@ -1262,6 +1268,8 @@ public class Main extends JFrame implements ActionListener {
         if (choice == 1) {
             // User clicked "Return Book"
             user.returnBook(book);
+            library.removeUser(user);
+            library.addUser(user);
             System.out.println(user.getBooks());
             JOptionPane.showMessageDialog(this, "Book Returned!");
 

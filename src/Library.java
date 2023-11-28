@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Library {
-    static ArrayList<User> users;
+    private ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
     public ArrayList<Book> books;
 
@@ -103,7 +103,7 @@ public class Library {
         }
     }
 
-    public static void addUser(User t){
+    public void addUser(User t) throws PasswordException{
         for (User u: users){
             if(u.getUsername().equals(t.getUsername()) && u.getPassword().equals(t.getPassword())){
                 return;
@@ -129,7 +129,7 @@ public class Library {
     }
 
     // method to remove a user from the system
-    public static void removeUser(User user){
+    public void removeUser(User user){
         // first checks if the user is in the system
         if (users.remove(user)){
             // if it is, it will already be removed from the arraylist
@@ -295,15 +295,15 @@ public class Library {
                 // converts string into string array of each part separated by a comma as an element
                 String[] parts = str.split(",");
                 // create a new user and add to arraylist
-                User u = new User(parts[0], parts[1].toCharArray());
+                users.add(new User(parts[0], parts[1].toCharArray()));
+                int u = users.size();
                 for (int i=2; i<parts.length; i++){
                     for (int j=0; j<books.size(); j++){
                         if(books.get(j).getName().equals(parts[i])){
-                            u.checkout(books.get(j));
+                            users.get(u-1).checkout(books.get(j));
                         }
                     }
                 }
-                users.add(u);
             }
             br.close();
         } catch (Exception e){
