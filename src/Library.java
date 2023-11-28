@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Library {
-    ArrayList<User> users;
+    private ArrayList<User> users;
     protected ArrayList<Librarian> librarians;
     public ArrayList<Book> books;
 
