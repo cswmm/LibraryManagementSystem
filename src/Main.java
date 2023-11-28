@@ -57,7 +57,6 @@ public class Main extends JFrame implements ActionListener {
         //initializes librarian, users, and books in arraylists and file-IO system
         library.initializeLibrarian();
         library.initializeUsers();
-        library.initializeBooks();
         System.out.println(library.librarians);
         System.out.println(library.users);
         System.out.println(library.books);
@@ -1217,6 +1216,8 @@ public class Main extends JFrame implements ActionListener {
                 // Add your checkout logic here
                 user.bookCheckoutRequirement(book);
                 user.checkout(book);
+                Library.removeUser(user);
+                Library.addUser(user);
                 System.out.println(user.getBooks());
                 JOptionPane.showMessageDialog(this, "Book Checked Out!");
             } catch (BookCheckoutException e) {
