@@ -1013,12 +1013,18 @@ public class Main extends JFrame implements ActionListener {
         jList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+
                 if (!e.getValueIsAdjusting()) {
-                    Book b = library.getBooks().get(jList.getSelectedIndex());
-                    showDeleteBookInfo(b);
+                    if (!deletedBook){
+                        Book b = library.getBooks().get(jList.getSelectedIndex());
+                        showDeleteBookInfo(b);
+                    }
                     if (deletedBook){
-                        listModel.remove(jList.getSelectedIndex());
-                        deletedBook = false;
+                        int selectedIndex = jList.getSelectedIndex();
+                        if (selectedIndex != -1) {
+                            listModel.remove(selectedIndex);
+                            deletedBook = false;
+                        }
                     }
                 }
             }
@@ -1110,11 +1116,16 @@ public class Main extends JFrame implements ActionListener {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    User u = library.getUsers().get(jList.getSelectedIndex());
-                    showDeleteUserInfo(u);
+                    if (!deletedUser){
+                        User u = library.getUsers().get(jList.getSelectedIndex());
+                        showDeleteUserInfo(u);
+                    }
                     if (deletedUser){
-                        listModel.remove(jList.getSelectedIndex());
-                        deletedUser = false;
+                        int selectedIndex = jList.getSelectedIndex();
+                        if (selectedIndex != -1) {
+                            listModel.remove(jList.getSelectedIndex());
+                            deletedUser = false;
+                        }
                     }
                 }
             }
