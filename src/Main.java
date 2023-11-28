@@ -386,15 +386,15 @@ public class Main extends JFrame implements ActionListener {
 
             }
 
-        } else if(e.getActionCommand().equals("Add Book")){ // Librarian-Add Book
+        } else if(e.getActionCommand().equals("Add Book")){ // Librarian-Add Book Page
             newPanel = createAddBookPanel();
-        } else if(e.getActionCommand().equals("Remove Book")){ // Librarian-Remove Book
+        } else if(e.getActionCommand().equals("Remove Book")){ // Librarian-Remove Book Page
             newPanel = createRemoveBookPanel();
-        } else if(e.getActionCommand().equals("Show Book List")){// Show Book List
+        } else if(e.getActionCommand().equals("Show Book List")){// Show Book List Page
             newPanel = createShowBookListPanel();
-        } else if(e.getActionCommand().equals("Remove User")){// Remove User
+        } else if(e.getActionCommand().equals("Remove User")){// Remove User Page
             newPanel = createRemoveUserPanel();
-        } else if(e.getActionCommand().equals("Show User List")){// Show User List
+        } else if(e.getActionCommand().equals("Show User List")){// Show User List Page
             newPanel = createShowUserListPanel();
         }
 
@@ -891,6 +891,8 @@ public class Main extends JFrame implements ActionListener {
         signupPanel.add(signUpButton);
         return signupPanel;
     }
+
+    // Add book page after clicking Add book button
     private JPanel createAddBookPanel(){
         inUserLoginPanel = false;
         inLibrarianPanel = true;
@@ -934,6 +936,7 @@ public class Main extends JFrame implements ActionListener {
         JTextField bookYearField = new JTextField();
         bookYearField.setBounds(305,235,200,30);
 
+        //Confirm adding book
         JButton addBookButton = new JButton("Add Book");
         addBookButton.setBounds(240, 300, 90, 45);
         addBookButton.addActionListener(new ActionListener() {
@@ -954,8 +957,10 @@ public class Main extends JFrame implements ActionListener {
                 if(count == 0){
                     librarian.addBook(library, bookName, bookAuthor, bookGenre, bookYear);
                     JOptionPane.showMessageDialog(null,"Success add book to library system");
+                    //GUI pop-up message
                 } else {
                     JOptionPane.showMessageDialog(null,"Book already in library system");
+                    //GUI pop-up message
                 }
             }
         });
@@ -977,6 +982,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    //Show a list of books, click on the book to delete
     private JPanel createRemoveBookPanel(){
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
@@ -1036,6 +1042,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    // Show a list of books in library system
     private JPanel createShowBookListPanel(){
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
@@ -1078,6 +1085,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    // Show a list of username, click on username to delete
     private JPanel createRemoveUserPanel(){
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);
@@ -1138,6 +1146,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    //Show a list of users
     private JPanel createShowUserListPanel(){
         inUserLoginPanel = false;
         Rectangle rectangle = new Rectangle(0, 0, 600, 80);

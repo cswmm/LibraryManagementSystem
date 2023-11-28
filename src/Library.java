@@ -269,10 +269,12 @@ public class Library {
         return false;
     }
 
+    //Return a list of books in library system
     public ArrayList<Book> getBooks(){ // Get list of book in library system
         return books;
     }
 
+    //Return a list of librarians in library system
     public ArrayList<Librarian> getLibrarians(){
         return librarians;
     } // Return librarians list

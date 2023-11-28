@@ -140,14 +140,17 @@ public class User extends Library {
         return "Username: " + getUsername() + "\nPassword:  " + getPassword();
     }*/
 
+    //Get a list of check out books
     public ArrayList<Book> getBooks() {
         return books;
     }
 
+    //Return user's username
     public String getUsername(){
         return this.username;
     }
 
+    //Return user's password
     public char[] getPassword(){
         return this.password;
     }
