@@ -2,36 +2,28 @@ import java.util.Date;
 import java.util.ArrayList;
 
 public class Book {
-
-    public enum genre{
-        COMEDY, SCIENCE_FICTION, ROMANCE, FANTASY, ACTION, DYSTOPIA, HISTORY
-    }
-
-    private ArrayList<genre> genreList = new ArrayList<>();
     private String name;
     private String author;
     private String genre;
     private int year;
-
-    //private Date dueDate = null; // book in library don't have due date
-
     private boolean checkedOut = false;
 
     public Book(){
     }
 
-    public Book(String name, String author, String genre, int year/* Date dueDate*/){
+    public Book(String name, String author, String genre, int year){
         this.name = name;
         this.author = author;
         this.genre = genre;
         this.year = year;
-        //this.dueDate = dueDate;
     }
 
+    //checks if book is checked out or not when a user tries to check it out
     public boolean isCheckedOut() {
         return checkedOut;
     }
 
+    //sets status of book to checked out or not
     public void setCheckedOut(boolean checkedOut) {
         this.checkedOut = checkedOut;
     }
@@ -50,12 +42,6 @@ public class Book {
         return this.genre;
     }
 
-    //public Date getDueDate(){
-     //   return this.dueDate;
-    //}
-
-    //public LinkedList<genre> getGenreList(){ return genreList; }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -64,17 +50,9 @@ public class Book {
         this.author = author;
     }
 
-    /*public void setGenreList(LinkedList<genre> genreList) {
-        this.genreList = genreList;
-    }*/
-
     public void setYear(int year) {
         this.year = year;
     }
-
-    /*public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }*/
 
     @Override
     public String toString() {

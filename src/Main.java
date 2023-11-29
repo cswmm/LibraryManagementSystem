@@ -129,6 +129,7 @@ public class Main extends JFrame implements ActionListener {
             //creates new unique user panel
             if (library.containsUserName(enterUsernameField.getText()) && library.containsPassword(enterPasswordField.getPassword())){
                 User u = createTempUser();
+                //checks if user is premium or not
                 if (u.hasPremium()){
                     newPanel = createPremiumUserPagePanel(u);
                 } else {
@@ -140,11 +141,13 @@ public class Main extends JFrame implements ActionListener {
             }
 
         }
+        //log-in as admin
         else if (e.getActionCommand().equals("Log-In [A]")) {
             if (library.containsLibrarianUserName(enterLibrarianUsernameField.getText()) && library.containsLibrarianPassword(enterLibrarianPasswordField.getPassword())){
                 newPanel = createLibrarianPanel();
             }
         }
+        //options button in user or premium user page
         else if (e.getActionCommand().equals("Options")) {
             //creates drop menu when options menu is pressed in user panel
             User u = createTempUser();
@@ -410,6 +413,7 @@ public class Main extends JFrame implements ActionListener {
         this.repaint();
     }
 
+    //creates a temporary user when you login or sign up to handle null users
     public User createTempUser(){
         if (enterUsernameField == null){
             return library.getUser(usernameField.getText(), passwordField.getPassword());
@@ -417,6 +421,7 @@ public class Main extends JFrame implements ActionListener {
         return library.getUser(enterUsernameField.getText(), enterPasswordField.getPassword());
     }
 
+    //admin page with buttons for all of admin's functionality
     private JPanel createLibrarianPanel() {
         inUserLoginPanel = false;
         inLibrarianPanel = false;
@@ -458,16 +463,12 @@ public class Main extends JFrame implements ActionListener {
         checkUserCheckOutButton.setBounds(290,230,175,50);
         checkUserCheckOutButton.addActionListener(this);
 
-       /* JButton addNewAdminButton = new JButton("Add Admin");
-        addNewAdminButton.setBounds(200,520,200,50);
-        addNewAdminButton.add(this); */
 
         panel.add(addBookButton);
         panel.add(removeBookButton);
         panel.add(removeUserButton);
         panel.add(checkRequestButton);
         panel.add(checkUserCheckOutButton);
-       // panel.add(addNewAdminButton);
         //End of add buttons
 
 
@@ -478,6 +479,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    //starting screen, offers options to login or sign up
     private JPanel startScreenPanel(){
         inUserLoginPanel = false;
         inLibrarianPanel = false;
@@ -735,6 +737,7 @@ public class Main extends JFrame implements ActionListener {
     }
 
 
+    //gui for deciding whether to login as a user or admin
     private JPanel createLoginPanel() {
         inUserLoginPanel = false;
         inLibrarianPanel = false;
@@ -762,6 +765,7 @@ public class Main extends JFrame implements ActionListener {
         return loginPanel;
     }
 
+    //gui for logging in a user
     private JPanel createUserLoginPanel(){
         inUserLoginPanel = true;
         inLibrarianPanel = false;
@@ -807,6 +811,7 @@ public class Main extends JFrame implements ActionListener {
         return userLoginPanel;
     }
 
+    //gui for logging in as an admin
     private JPanel createAdminLoginPanel(){
         inUserLoginPanel = true;
         inLibrarianPanel = false;
@@ -852,6 +857,7 @@ public class Main extends JFrame implements ActionListener {
         return adminLoginPanel;
     }
 
+    //gui for sign up page
     private JPanel createSignupPanel() {
         inUserLoginPanel = false;
         inLibrarianPanel = false;
@@ -1005,6 +1011,7 @@ public class Main extends JFrame implements ActionListener {
         optionsButton.setBounds(475, 15, 100, 50);
         optionsButton.addActionListener(this);
 
+        //creates graphical representation of books
         LinkedList<Book> booklist = new LinkedList<>();
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -1028,6 +1035,7 @@ public class Main extends JFrame implements ActionListener {
                         Book b = library.getBooks().get(jList.getSelectedIndex());
                         showDeleteBookInfo(b);
                     }
+                    //if book is deleted, jList is updated graphically
                     if (deletedBook){
                         int selectedIndex = jList.getSelectedIndex();
                         if (selectedIndex != -1) {
@@ -1110,6 +1118,7 @@ public class Main extends JFrame implements ActionListener {
 
         LinkedList<String> usernamelist = new LinkedList<>();
 
+        //creates a jlist with all books and creates gui for it
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for(User user: library.getUsers()){
             usernamelist.add(user.getUsername());
@@ -1131,6 +1140,7 @@ public class Main extends JFrame implements ActionListener {
                         User u = library.getUsers().get(jList.getSelectedIndex());
                         showDeleteUserInfo(u);
                     }
+                    //if user is deleted, jlist removes the user and updates the gui
                     if (deletedUser){
                         int selectedIndex = jList.getSelectedIndex();
                         if (selectedIndex != -1) {
@@ -1193,12 +1203,14 @@ public class Main extends JFrame implements ActionListener {
     }
 
     private void showUserProfile(User user) {
+        //displays some user information in pop up
         String name = user.getUsername();
         String password = String.valueOf(user.getPassword());
         String profileMessage = "Name: " + name + "\n" + "Password: " + password + "\n" + "# of Checked Out Books: " + user.getBooks().size();
         JOptionPane.showMessageDialog(this, profileMessage, "Profile", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    //this method handles checking out a book
     private void showBookInfo(Book book, User user) {
         String name = book.getName();
         String author = book.getAuthor();
@@ -1226,9 +1238,10 @@ public class Main extends JFrame implements ActionListener {
         if (choice == 1) {
             try {
                 // User clicked "Check Out"
-                // Add your checkout logic here
+                //checkout exception method which is in the user class
                 user.bookCheckoutRequirement(book);
                 user.checkout(book);
+                //rewrites txt file to include user having a book
                 library.removeUser(user);
                 library.addUser(user);
                 System.out.println(user.getBooks());
@@ -1268,6 +1281,7 @@ public class Main extends JFrame implements ActionListener {
         if (choice == 1) {
             // User clicked "Return Book"
             user.returnBook(book);
+            //rewrites txt file to update user to have no books stored in file io
             library.removeUser(user);
             library.addUser(user);
             System.out.println(user.getBooks());
@@ -1332,12 +1346,20 @@ public class Main extends JFrame implements ActionListener {
         // Handle the user's choice
         if (choice == 1) {
             // User clicked "Remove User"
+            // If admin deletes a user with a checked out book, that book's status is set back
+            //to not checked out
+            if (!user.getBooks().isEmpty()){
+                for (int i = 0; i < user.getBooks().size(); i++){
+                    user.getBooks().get(i).setCheckedOut(false);
+                }
+            }
             librarian.removeUser(library, user);
             deletedUser = true;
             JOptionPane.showMessageDialog(null,"Success. Removed User from library system");
         }
     }
 
+    //creates white rectangle border
     public JPanel createUpperBorderDisplay(Rectangle rectangle, Color c){
         JPanel panel = new JPanel() {
             @Override
@@ -1351,6 +1373,7 @@ public class Main extends JFrame implements ActionListener {
         return panel;
     }
 
+    //creates text label "1337h4x0r Library"
     private JLabel createApplicationLabel(Color c) {
         JLabel label = new JLabel("1337h4x0r Library");
         label.setBounds(30, 10, 400, 60);
