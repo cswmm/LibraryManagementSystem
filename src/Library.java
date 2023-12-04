@@ -33,7 +33,7 @@ public class Library {
         // else, add it to the database and arraylist
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "src/books.txt", true));
+                    "books.txt", true));
             // write new book at bottom of txt file
             bw.write(name + "," + author + "," + genre + "," + year + "\n");
             books.add(new Book(name, author, genre, year));
@@ -51,12 +51,12 @@ public class Library {
             // now, it must be removed from the database
             try {
                 // to remove a book from the system, create a temp file and copy all lines but the book to remove
-                File newFile = new File("src/books-temp.txt");
-                File oldFile = new File("src/books.txt");
+                File newFile = new File("books-temp.txt");
+                File oldFile = new File("books.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "src/books-temp.txt", true));
+                        "books-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("src/books.txt"));
+                        new FileReader("books.txt"));
                 String str;
                 // check every line
                 while ((str = br.readLine()) != null){
@@ -73,7 +73,7 @@ public class Library {
                 // delete the old file
                 oldFile.delete();
                 // rename the new file
-                File dump = new File("src/books.txt");
+                File dump = new File("books.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 return;
@@ -92,7 +92,7 @@ public class Library {
         // file io- adding a user's username and password to the database (users txt file)
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "src/users.txt", true));
+                    "users.txt", true));
             // write username and password separated by a comma at the end of the text file
             bw.write(username + "," + String.valueOf(password) + "\n");
             // add to arraylist
@@ -113,7 +113,7 @@ public class Library {
         // file io- adding a user's username and password to the database (users txt file)
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(
-                    "src/users.txt", true));
+                    "users.txt", true));
             // write username and password separated by a comma at the end of the text file
             StringBuilder sb = new StringBuilder();
             for (int i=0; i<t.getBooks().size(); i++){
@@ -136,12 +136,12 @@ public class Library {
             // now, it must be removed from the database
             try {
                 // create a temp file and copy all lines but the removed user
-                File newFile = new File("src/users-temp.txt");
-                File oldFile = new File("src/users.txt");
+                File newFile = new File("users-temp.txt");
+                File oldFile = new File("users.txt");
                 BufferedWriter bw = new BufferedWriter(new FileWriter(
-                        "src/users-temp.txt", true));
+                        "users-temp.txt", true));
                 BufferedReader br = new BufferedReader(
-                        new FileReader("src/users.txt"));
+                        new FileReader("users.txt"));
                 String str;
                 // iterate through every line
                 while ((str = br.readLine()) != null){
@@ -157,15 +157,15 @@ public class Library {
                 // delete old file
                 oldFile.delete();
                 // rename new file
-                File dump = new File("src/users.txt");
+                File dump = new File("users.txt");
                 newFile.renameTo(dump);
             } catch (Exception e){
                 e.printStackTrace();
             }
 
             // Delete the old file and rename the temporary file
-            File oldFile = new File("src/users.txt");
-            File newFile = new File("src/users-temp.txt");
+            File oldFile = new File("users.txt");
+            File newFile = new File("users-temp.txt");
             newFile.renameTo(oldFile);
         }
     }
@@ -287,8 +287,9 @@ public class Library {
     public void initializeUsers(){
         try {
             initializeBooks();
+            InputStream is = getClass().getResourceAsStream("users.txt");
             BufferedReader br = new BufferedReader(
-                    new FileReader("src/users.txt"));
+                    new InputStreamReader(is));
             String str;
             // adds all users in database to arraylist
             while ((str = br.readLine()) != null){
@@ -314,8 +315,9 @@ public class Library {
     // method to read from database at start of program
     public void initializeLibrarian(){
         try {
+            InputStream is = getClass().getResourceAsStream("librarian.txt");
             BufferedReader br = new BufferedReader(
-                    new FileReader("src/librarian.txt"));
+                    new InputStreamReader(is));
             String str;
             // adds all librarians in database to arraylist
             while ((str = br.readLine()) != null){
@@ -333,8 +335,9 @@ public class Library {
     // method to read from database at start of program
     public void initializeBooks(){
         try {
+            InputStream is = getClass().getResourceAsStream("books.txt");
             BufferedReader br = new BufferedReader(
-                    new FileReader("src/books.txt"));
+                    new InputStreamReader(is));
             String str;
             // adds all books in database to arraylist
             while ((str = br.readLine()) != null){

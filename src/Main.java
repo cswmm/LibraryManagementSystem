@@ -61,7 +61,7 @@ public class Main extends JFrame implements ActionListener {
         System.out.println(library.getUsers());
         System.out.println(library.books);
         //allows quick access to only librarian
-        librarian = library.getLibrarians().get(0);
+        librarian = new Librarian("Librarian", "admin".toCharArray());
         this.setTitle("1337h4x0r.library.sjsu.ca.gov");
         this.setSize(600, 400);
         panel = startScreenPanel();
@@ -516,7 +516,7 @@ public class Main extends JFrame implements ActionListener {
                 g2d.setClip(circle);
 
                 try {
-                    BufferedImage image = ImageIO.read(new File("Images/img_2.png")); // Replace with the actual path to your image
+                    BufferedImage image = ImageIO.read(new File("img_2.png")); // Replace with the actual path to your image
                     g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -606,7 +606,7 @@ public class Main extends JFrame implements ActionListener {
                 g2d.setClip(circle);
 
                 try {
-                    BufferedImage image = ImageIO.read(new File("Images/img.png")); // Replace with the actual path to your image
+                    BufferedImage image = ImageIO.read(new File("img.png")); // Replace with the actual path to your image
                     g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
                 } catch (IOException e) {
                     e.printStackTrace();
