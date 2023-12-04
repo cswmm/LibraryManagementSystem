@@ -7,11 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Time;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.awt.geom.Ellipse2D;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -516,7 +514,8 @@ public class Main extends JFrame implements ActionListener {
                 g2d.setClip(circle);
 
                 try {
-                    BufferedImage image = ImageIO.read(new File("img_2.png")); // Replace with the actual path to your image
+                    InputStream is = getClass().getResourceAsStream("img_2.png");
+                    BufferedImage image = ImageIO.read(is);
                     g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -606,7 +605,8 @@ public class Main extends JFrame implements ActionListener {
                 g2d.setClip(circle);
 
                 try {
-                    BufferedImage image = ImageIO.read(new File("img.png")); // Replace with the actual path to your image
+                    InputStream is = getClass().getResourceAsStream("img.png");
+                    BufferedImage image = ImageIO.read(is);
                     g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -707,7 +707,8 @@ public class Main extends JFrame implements ActionListener {
                 g2d.setClip(circle);
 
                 try {
-                    BufferedImage image = ImageIO.read(new File("Images/img_1.png")); // Replace with the actual path to your image
+                    InputStream is = getClass().getResourceAsStream("img_1.png");
+                    BufferedImage image = ImageIO.read(is);
                     g2d.drawImage(image, (int) circle.getX(), (int) circle.getY(), (int) circle.getWidth(), (int) circle.getHeight(), this);
                 } catch (IOException e) {
                     e.printStackTrace();
