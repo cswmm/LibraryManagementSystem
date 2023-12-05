@@ -1,8 +1,8 @@
+import javax.swing.*;
 import java.io.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 public class Library {
     private ArrayList<User> users;
@@ -288,6 +288,9 @@ public class Library {
         try {
             initializeBooks();
             InputStream is = getClass().getResourceAsStream("users.txt");
+            if(is == null){
+                throw new FileNotFoundException();
+            }
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(is));
             String str;
@@ -308,7 +311,7 @@ public class Library {
             }
             br.close();
         } catch (Exception e){
-            return;
+            JOptionPane.showMessageDialog(null, e.toString());
         }
     }
 
@@ -316,6 +319,9 @@ public class Library {
     public void initializeLibrarian(){
         try {
             InputStream is = getClass().getResourceAsStream("librarian.txt");
+            if(is == null){
+                throw new FileNotFoundException();
+            }
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(is));
             String str;
@@ -328,7 +334,7 @@ public class Library {
             }
             br.close();
         } catch (Exception e){
-            return;
+            JOptionPane.showMessageDialog(null, e.toString());
         }
     }
 
@@ -336,6 +342,9 @@ public class Library {
     public void initializeBooks(){
         try {
             InputStream is = getClass().getResourceAsStream("books.txt");
+            if(is == null){
+                throw new FileNotFoundException();
+            }
             BufferedReader br = new BufferedReader(
                     new InputStreamReader(is));
             String str;
@@ -348,7 +357,7 @@ public class Library {
             }
             br.close();
         } catch (Exception e){
-            return;
+            JOptionPane.showMessageDialog(null, e.toString());
         }
     }
 
